@@ -27,24 +27,28 @@ public class StudentDaoImpl implements StudentDao {
 	public void addStu(Student stu) {
 		// TODO Auto-generated method stub
 		StringBuffer strSQL=new StringBuffer();
+		StringBuffer strSQL2=new StringBuffer();
 		//strSQL.append("insert into student(stu_name,stu_sex,stu_school,stu_phone,stu_birthDate,stu_remark,stu_tab,stu_operation_date,class_number) values(?,?,?,?,?,?,1,?,?)");
 		strSQL.append("insert into student(stu_name,stu_sex,stu_school,stu_phone,stu_birth_date,stu_remark,stu_tab,stu_operation_date,class_name) values(?,?,?,?,?,?,1,?,?)");
+		strSQL2.append("insert into account_info(stu_name,money,times) values(?,0,0)");
 		
 		Connection conn=JDBCUtil.getConnection();
 		
-		PreparedStatement stmt=null;
+		PreparedStatement stmt,stmt2=null;
 		int count = 0;
 		int index = 1;
 		
 		
 		try {
 			stmt=conn.prepareStatement(strSQL.toString());
+			stmt2=conn.prepareStatement(strSQL2.toString());
 			
 			stmt.setString(1, stu.getStu_name());
 			stmt.setString(2, stu.getStu_sex());
 			stmt.setString(3, stu.getStu_school());
 			stmt.setString(4, stu.getStu_phone());
 			
+			stmt2.setString(1, stu.getStu_name());
 			
 	        stmt.setString(5, stu.getStu_birthDate());
 	        stmt.setString(6, stu.getStu_remark());
@@ -56,6 +60,9 @@ public class StudentDaoImpl implements StudentDao {
 	        stmt.setString(8, stu.getClass_name());
 	        
 			count=stmt.executeUpdate();
+			stmt2.executeUpdate();
+			
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
