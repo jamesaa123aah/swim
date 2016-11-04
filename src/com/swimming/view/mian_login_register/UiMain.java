@@ -62,8 +62,10 @@ public class UiMain extends JFrame{
 		JPanel jPanel2 = jPanelSecond.getJPanelSecond();
 				
 //		返回第三个面板到主界面
-		JPanleThird jPanleThird = new JPanleThird();
-		JPanel jPanel3 = jPanleThird.getJpanelThird();
+		//JPanleThird jPanleThird = new JPanleThird();
+		//JPanel jPanel3 = jPanleThird.getJpanelThird();
+		
+		JPanel jPanel3 = JPanleThird.getInstance();
 		
 				
 		
@@ -112,7 +114,7 @@ public class UiMain extends JFrame{
 		setVisible(true);		
 
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		
+		setSize(800, 800);
 	
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		

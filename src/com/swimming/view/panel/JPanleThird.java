@@ -6,12 +6,15 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.ScrollPane;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -19,52 +22,101 @@ import com.swimming.dao.StudentDao;
 import com.swimming.dao.Impl.StudentDaoImpl;
 import com.swimming.model.Student;
 
-public class JPanleThird  {
+public class JPanleThird  implements TableModelListener{
 
 
-	
-	public JPanel getJpanelThird() {
-	
+//	 my is abstract tablemodel
+	 static public MyTableModel my =null; 
+	 static JTable table =null;
+	 private static JPanleThird jPanelThird = null;
+	 private static JPanel jPanel = null;
 
+	 
+//	 单实例设计模式
+	 private JPanleThird(){
+		 my = new MyTableModel();
+		 table = new JTable(my);
+	 }
+		 
+	 public static JPanel getInstance() {
 		
-//		把列名和数据加入
-		JTable table = new JTable(new MyTableModel());
-		
-//		int columncount = table.getColumnCount();
-//		
-//		
-////          设置表格宽度
-//		        for (int i = 0; i < columncount; i++) {
-//
-//		          table.getColumnModel().getColumn(i).setPreferredWidth(33);
-//
-//		        }
-//		        
-//		        table.getColumnModel().getColumn(2).setPreferredWidth(60);
-//		        table.getColumnModel().getColumn(1).setPreferredWidth(60);
-//		        table.getColumnModel().getColumn(0).setPreferredWidth(60);
+		 if(jPanel==null){
+			 
+			 jPanelThird = new JPanleThird();
+			 jPanel = new JPanel();
+		 }
+		 
 
-		
-
-//		设置表的宽
-		table.getColumnModel().getColumn(2).setPreferredWidth(130);
-		table.getColumnModel().getColumn(1).setPreferredWidth(150);
-		table.getColumnModel().getColumn(0).setPreferredWidth(150);
-		table.getColumnModel().getColumn(3).setPreferredWidth(80);
-		//JScrollPane scrollPane = new JScrollPane(table);
-		
-	    JScrollPane sp=new JScrollPane(table);
-	    sp.setPreferredSize(new Dimension(1200, 800));
-		JPanel jPanel = new JPanel();
-		jPanel.add(sp);	
-		
+//			把列名和数据加入  监听这个对象。。。
+			my.addTableModelListener(jPanelThird);
+			table = new JTable(my);
+			
+//			设置表的宽
+			table.getColumnModel().getColumn(2).setPreferredWidth(130);
+			table.getColumnModel().getColumn(1).setPreferredWidth(150);
+			table.getColumnModel().getColumn(0).setPreferredWidth(150);
+			table.getColumnModel().getColumn(3).setPreferredWidth(80);
+			
+		    JScrollPane sp=new JScrollPane(table);
+		    sp.setPreferredSize(new Dimension(1200, 800));
+			
+			jPanel.add(sp);
+			
 		return jPanel;
 		
 	}
 	
-	private class MyTableModel extends AbstractTableModel{
 
+	
+//	 暂时不需要捕捉事件，直接扫描table就可以
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		// TODO Auto-generated method stub
+//		int row = e.getFirstRow();
+//		int column = e.getColumn();
+//		
+//		if(column==1){
+//			Boolean boolean1 = (Boolean) my.getValueAt(row, column);
+//			System.out.println(boolean1);
+////		Student student = new Student();
+////		student.setStu_name((String) my.getValueAt(row, column-1));
+////			listOneKey.add(student);
+//			
+//		}else if (column == 2) {
+//			
+//			my.setValueAt(my.getValueAt(row, column), row, column-1);
+//			
+//		}
+//		
+//		else{
+//			String tem = (String) my.getValueAt(row, column);
+//			System.out.println(tem);
+//		}
 		
+	}
+
+	public class MyTableModel extends AbstractTableModel{
+
+	
+//		public List<Student> getListOnekey() {
+//			
+//			//一健考勤的list
+//			 List<Student> listOneKey = new LinkedList<Student>();
+//			//扫描table	
+//			//int a = my.getRowCount();
+//			//System.out.println(a);
+//			for (int i = 0; i < 5; i++) {
+//				if((Boolean)my.getValueAt(i, 1)==true){
+//					Student student = new Student();
+//					student.setStu_name((String)my.getValueAt(i, 0));
+//					listOneKey.add(student);
+//				}
+//			}
+//			
+//			System.out.println(listOneKey.get(0).getStu_name());
+//			return listOneKey;
+//			
+//		}
 		
 		
 		String[] columnNames =
@@ -104,7 +156,7 @@ public class JPanleThird  {
 						data[i][j]=10;
                         break;
 					default:
-						data[i][j]=0;
+						data[i][j]="0";
 						break;
 					}
 				}
@@ -185,4 +237,6 @@ public class JPanleThird  {
 
 		
 	}
+
+	
 }

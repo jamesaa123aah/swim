@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import com.swimming.dao.StudentDao;
 import com.swimming.dao.Impl.StudentDaoImpl;
 import com.swimming.model.Student;
+import com.swimming.view.mian_login_register.UiMain;
 
 public class StudentManagementIncrease extends JDialog{
 
@@ -137,6 +138,8 @@ public class StudentManagementIncrease extends JDialog{
 				studentDao.addStu(stu);
 				
 				dispose();
+				
+				
 			}
 		});
 		
