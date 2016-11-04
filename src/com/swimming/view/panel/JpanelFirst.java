@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -195,4 +196,17 @@ private String[] get_month() {
     return arry;
 }
 
+public String year() {
+	
+	String year = (String) jComboBox2.getSelectedItem();
+	return year;
+	
+}
+
+public String month() {
+	
+	String month = (String) jComboBox3.getSelectedItem();
+	return month;
+	
+}
 }

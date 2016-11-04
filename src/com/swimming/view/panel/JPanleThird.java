@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.ScrollPane;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,8 +19,14 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import com.swimming.dao.AttendanceDao;
+import com.swimming.dao.PaymentDao;
 import com.swimming.dao.StudentDao;
+import com.swimming.dao.Impl.AttendanceDaoImpl;
+import com.swimming.dao.Impl.PaymentDaoImpl;
 import com.swimming.dao.Impl.StudentDaoImpl;
+import com.swimming.model.Attendance;
+import com.swimming.model.Payment;
 import com.swimming.model.Student;
 
 public class JPanleThird  implements TableModelListener{
@@ -120,7 +127,7 @@ public class JPanleThird  implements TableModelListener{
 		
 		
 		String[] columnNames =
-			{ "姓名","一健考勤","漏打卡","次数","1","2","3","4","5",
+			{ "姓名","一健考勤","漏打卡","剩余","1","2","3","4","5",
 					"6","7","8","9","10","11","12","13","14","15","16","17",
 					"18","19","20","21","22","23","24","25","26","27","28","29",
 					"30","31"};
@@ -129,12 +136,16 @@ public class JPanleThird  implements TableModelListener{
 	    public MyTableModel() {
 			// TODO Auto-generated constructor stub
 	    	
-//	    	从数据库获取学生
+//	    	从数据库获取所有学生
 	    	StudentDao studentDao = new StudentDaoImpl();
 			List<Student> listAll ;
 	    	listAll=studentDao.allStudent();
 	    	int number = listAll.size();
 	    	
+//	    	从数据库读取学生剩余次数
+	    	PaymentDao paymentDao = new PaymentDaoImpl();
+	    	List<Payment> listPayments;
+  	
 	    	
 	    	data= new Object[number][35];
 	    	
@@ -153,13 +164,59 @@ public class JPanleThird  implements TableModelListener{
 						data[i][j] = new Boolean(false);
 						break;
 					case 3:
-						data[i][j]=10;
-                        break;
+						String tem_name = listAll.get(i).getStu_name();
+						listPayments=paymentDao.MoneyandTime(tem_name);
+						data[i][j] = listPayments.get(0).getTimes();						
+						break;  
 					default:
-						data[i][j]="0";
+						data[i][j]=" ";
 						break;
 					}
 				}
+			}
+	    	
+	    	
+
+	    	
+	    	/*
+	    	 * 解析attendance
+	    	 * 按照年月日放入考勤的Jtable
+	    	 * 1、判断界面现在选中的月份和年份
+	    	 * 2、从attendance表中读取选中月和年的所有考勤信息（解析数据表中的考勤日期）
+	    	 * 3、将得到的数据放入表中
+	    	 * 4、注意界面显示正常考勤的话是0，漏打卡的话是1，默认没有考勤是空
+	    	 * 11/4
+	    	 * jamesLee（目前只是当前月份的测试BUGBUGBUG!!!!!!!!）
+	    	 */
+//	    	从数据库Attendance表获取考勤数据
+	    	AttendanceDao attendanceDao = new AttendanceDaoImpl();
+	    	List<Attendance> list = new LinkedList<Attendance>();
+	    	list = attendanceDao.Attendance();
+	    	int number2 = list.size();
+	    	
+	    	//这个月份所有考勤信息的条数,一条一条放入Jtable
+	    	for (int i = 0; i < number2; i++) {
+				
+	    		String name = list.get(i).getStu_name();
+				String date = list.get(i).getAttendance_date();
+				
+				List<String> list_date= new ArrayList<>();
+				list_date.add(date.substring(0, 4));
+				list_date.add(date.substring(5, 7));
+				list_date.add(date.substring(8, 10));
+				
+				String month = list_date.get(1);
+				int day = Integer.parseInt(list_date.get(2));
+				
+				//检索整个Jtable,判断此时表中的学生是否有考勤信息,number 所有学员
+				for (int k = 0; k < number; k++) {
+					
+					if(data[k][0].equals(name)){
+						data[k][day+3]=list.get(i).getForget();
+						
+					}
+				}
+				
 			}
 	    	
 		}

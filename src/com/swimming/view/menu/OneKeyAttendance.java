@@ -55,14 +55,20 @@ public class OneKeyAttendance extends JDialog  implements TableModelListener{
 				//System.out.println();
 				int m  = 0;
 				for (int i = 0; i <JPanleThird.my.getRowCount(); i++) {
+					
+//					ÅÐ¶Ï¿¼ÇÚ
 					if((Boolean)JPanleThird.my.getValueAt(i, 1)==true){
 						myTableModelOnekey.setValueAt(JPanleThird.my.getValueAt(i, 0), m, 0);
-					    m++;
+						
+//						ÅÐ¶ÏÊÇ·ñÂ©´ò¿¨
+				    if((Boolean)JPanleThird.my.getValueAt(i, 2)==true){
+							myTableModelOnekey.setValueAt("Â©", m, 2);
+						}
+						
+				    m++;
 					}
-					
-					if((Boolean)JPanleThird.my.getValueAt(i, 2)==true){
-						myTableModelOnekey.setValueAt("Â©", i, 2);
-					}
+							
+					 
 				}
 				
 				
@@ -82,22 +88,32 @@ public class OneKeyAttendance extends JDialog  implements TableModelListener{
                  AttendanceDao attendanceDao;
                  
                  
-                 for (int i = 0; i < myTableModelOnekey.getColumnCount(); i++) {
+                 for (int i = 0; i < myTableModelOnekey.getRowCount(); i++) {
                 	 
-                	 attendance = new Attendance();
-                	 attendanceDao= new AttendanceDaoImpl();
+                	
                 	 
-//                	 setName
-                	 attendance.setStu_name((String) myTableModelOnekey.getValueAt(i, 0));              	 
-//                	 setÂ©´ò¿¨
-                	 if (myTableModelOnekey.getValueAt(i, 2)=="Â©") {
-                		 attendance.setForget(1);
-					}else {
-						attendance.setForget(0);
-					}
+//                	 ÅÐ¶ÏÊÇ·ñ´ÓÒ»¼ü¿¼ÇÚ±íÀïÒÆ³ýÊý¾ÝÁË
+                	 if((boolean)myTableModelOnekey.getValueAt(i, 1)==false){
+                   	 
+                		 attendance = new Attendance();
+                    	 attendanceDao= new AttendanceDaoImpl();
+                		
+                    	 attendance.setStu_name((String) myTableModelOnekey.getValueAt(i, 0));              	 
+//                    	 setÂ©´ò¿¨
+                    	 if (myTableModelOnekey.getValueAt(i, 2)=="Â©") {
+                    		 attendance.setForget(1);
+    					}else {
+    						attendance.setForget(0);
+    					}
+                    	     	 
+                    	 attendanceDao.stuAttend(attendance);
+                		 
+                	 }
                 	 
                 	 
-                	 attendanceDao.stuAttend(attendance);
+
+                
+                 
                  }
                 
 				

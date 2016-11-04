@@ -114,7 +114,7 @@ public class UiMain extends JFrame{
 		setVisible(true);		
 
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		setSize(800, 800);
+		//setSize(800, 800);
 	
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
