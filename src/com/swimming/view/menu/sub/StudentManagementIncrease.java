@@ -18,8 +18,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.swimming.dao.CourseDao;
 import com.swimming.dao.StudentDao;
+import com.swimming.dao.Impl.CourseDaoImpl;
 import com.swimming.dao.Impl.StudentDaoImpl;
+import com.swimming.model.Course;
 import com.swimming.model.Student;
 import com.swimming.view.mian_login_register.UiMain;
 
@@ -58,7 +61,7 @@ public class StudentManagementIncrease extends JDialog{
 	
 	JLabel jLabel_class = new JLabel("班级：");
 	String array_class[] = {"恐龙班","初级班班","高级班"};
-	JComboBox jComboBox_class = new JComboBox<>(array_class);
+	JComboBox jComboBox_class = new JComboBox<>();
 	JTextField jTextField_class = new JTextField("请输入班级名字");
 	
 	JPanel jPanel_remark = new JPanel();
@@ -100,9 +103,22 @@ public class StudentManagementIncrease extends JDialog{
 		add(jTextField_phone);
 		
 //		增加班级选择框
+		/*
+		 * 
+		 * 在选择班级时候
+		 * 从数据库提供已有的班级
+		 */
+		CourseDao courseDao = new CourseDaoImpl();
+		List<Course> list_class=courseDao.allClass();
+		
+		for (int i = 0;i<list_class.size();i++) {
+			jComboBox_class.addItem(list_class.get(i).getClass_name());
+		}
+				
+
 		add(jLabel_class);
-		//add(jComboBox_class);
-		add(jTextField_class);
+		add(jComboBox_class);
+		//add(jTextField_class);
 		
 //		增加备注框
 		jPanel_remark.add(jLabel_remark);
@@ -112,6 +128,7 @@ public class StudentManagementIncrease extends JDialog{
 		add(new JLabel("                                   "));
 		add(jButton_confirm);
 		
+	
 	
 		
 //		确认按钮响应
@@ -125,7 +142,8 @@ public class StudentManagementIncrease extends JDialog{
 				List list_stu = getStudentInfo();
 				
 				Student stu=new Student();
-				stu.setClass_name(jTextField_class.getText());
+				//stu.setClass_name(jTextField_class.getText());
+				stu.setClass_name((String) jComboBox_class.getSelectedItem());
 				stu.setStu_name(jTextField_name.getText());
 				stu.setStu_sex((String) jComboBox_sex.getSelectedItem());
 				stu.setStu_school(jTextField_school.getText());

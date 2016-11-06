@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 
 import com.swimming.dao.CourseDao;
 import com.swimming.dao.Impl.CourseDaoImpl;
+import com.swimming.model.Course;
 
 public class ClassManagementDelete extends JDialog {
 
@@ -44,11 +46,22 @@ public class ClassManagementDelete extends JDialog {
 		GridBagConstraints gridBagConstraints_1 = new GridBagConstraints();
 		gridBagConstraints_1.gridy=0;
 		gridBagConstraints_1.gridx=1;
-		gridBagConstraints_1.ipadx=100;
+		gridBagConstraints_1.ipadx=50;
 		gridBagConstraints_1.insets = new Insets(30, 0, 0, 0);
 		gridBagConstraints_1.fill = GridBagConstraints.HORIZONTAL;
-//		container.add(jComboBox_class,gridBagConstraints_1);
-		container.add(jTextField_className, gridBagConstraints_1);
+		/*
+		 * 
+		 * 在选择班级时候
+		 * 从数据库提供已有的班级
+		 */
+		CourseDao courseDao = new CourseDaoImpl();
+		List<Course> list_class=courseDao.allClass();
+		
+		for (int i = 0;i<list_class.size();i++) {
+			jComboBox_class.addItem(list_class.get(i).getClass_name());
+		}
+		container.add(jComboBox_class,gridBagConstraints_1);
+		
 		
 		GridBagConstraints gridBagConstraints_2 = new GridBagConstraints();
 		gridBagConstraints_2.gridy=1;
@@ -79,7 +92,8 @@ public class ClassManagementDelete extends JDialog {
 				// TODO Auto-generated method stub
 				CourseDao courseDao = new CourseDaoImpl();
 				
-				courseDao.deleteClass(jTextField_className.getText());
+				//courseDao.deleteClass(jTextField_className.getText());
+				courseDao.deleteClass((String) jComboBox_class.getSelectedItem());
 				//courseDao.deleteClass(cousre_name);
 			}
 		});

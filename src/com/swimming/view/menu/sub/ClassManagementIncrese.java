@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,8 +14,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.swimming.dao.CoachDao;
 import com.swimming.dao.CourseDao;
+import com.swimming.dao.Impl.CoachDaoImpl;
 import com.swimming.dao.Impl.CourseDaoImpl;
+import com.swimming.model.Coach;
 import com.swimming.model.Course;
 
 public class ClassManagementIncrese extends JDialog {
@@ -65,8 +69,23 @@ public class ClassManagementIncrese extends JDialog {
 		gridBagConstraints_3.ipadx=100;
 		gridBagConstraints_3.insets = new Insets(30, 0, 0, 0);
 		gridBagConstraints_3.fill = GridBagConstraints.HORIZONTAL;
-//		container.add(jComboBox_coachName,gridBagConstraints_3);
-		container.add(jTextField_coachName, gridBagConstraints_3);
+		
+		/*
+		 * 将目前有的教练
+		 * 全部列出
+		 * 在添加班级的时候进行选择
+		 * 11/6
+		 */
+		CoachDao coachDao = new CoachDaoImpl();
+		Coach coach = new Coach();
+		List<Coach> list_allCoach = coachDao.allCoach();
+		
+		for (int i = 0; i < list_allCoach.size(); i++) {
+			jComboBox_coachName.addItem(list_allCoach.get(i).getCoach_name());
+		}
+		
+		container.add(jComboBox_coachName,gridBagConstraints_3);
+		//container.add(jTextField_coachName, gridBagConstraints_3);
 		
 		GridBagConstraints gridBagConstraints_4 = new GridBagConstraints();
 		gridBagConstraints_4.gridy=2;

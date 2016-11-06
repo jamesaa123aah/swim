@@ -13,11 +13,18 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.swimming.dao.CourseDao;
+import com.swimming.dao.PaymentDao;
 import com.swimming.dao.StudentDao;
+import com.swimming.dao.Impl.CourseDaoImpl;
+import com.swimming.dao.Impl.PaymentDaoImpl;
 import com.swimming.dao.Impl.StudentDaoImpl;
+import com.swimming.model.Course;
+import com.swimming.model.Payment;
 import com.swimming.model.Student;
 
 public class StudentManagementInfochange extends JDialog{
@@ -113,7 +120,8 @@ public class StudentManagementInfochange extends JDialog{
 		gridBagConstraints_333.gridy=1;
 		gridBagConstraints_333.gridx=1;
 		gridBagConstraints_333.insets = new Insets(60, 0, 0, 0);
-		gridBagConstraints_333.fill = GridBagConstraints.HORIZONTAL; 
+		gridBagConstraints_333.fill = GridBagConstraints.HORIZONTAL;
+		jTextField_name2.setEditable(false);
 		container.add(jTextField_name2,gridBagConstraints_333);
 		
 		GridBagConstraints gridBagConstraints_4 = new GridBagConstraints();
@@ -170,7 +178,21 @@ public class StudentManagementInfochange extends JDialog{
 		gridBagConstraints_11.gridx=1;
 		gridBagConstraints_11.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints_11.insets = new Insets(10, 0, 0, 0);
-		container.add(jTextField_class2, gridBagConstraints_11);
+		
+		/*
+		 * 
+		 * 在选择班级时候
+		 * 从数据库提供已有的班级
+		 */
+		CourseDao courseDao = new CourseDaoImpl();
+		List<Course> list_class=courseDao.allClass();
+		
+		for (int i = 0;i<list_class.size();i++) {
+			jComboBox_class2.addItem(list_class.get(i).getClass_name());
+		}
+			
+		container.add(jComboBox_class2, gridBagConstraints_11);
+		//container.add(jTextField_class2, gridBagConstraints_11);
 		
 		GridBagConstraints gridBagConstraints_12 = new GridBagConstraints();
 		gridBagConstraints_12.gridy=3;
@@ -224,11 +246,12 @@ public class StudentManagementInfochange extends JDialog{
 		GridBagConstraints gridBagConstraints_19 = new GridBagConstraints();
 		gridBagConstraints_19.gridy=5;
 		gridBagConstraints_19.gridx=1;
-		gridBagConstraints_19.ipady=150;
-		gridBagConstraints_19.ipadx=150;
+		gridBagConstraints_19.ipady=80;
+		gridBagConstraints_19.ipadx=80;
 		gridBagConstraints_19.fill = GridBagConstraints.BOTH;
 		gridBagConstraints_19.insets = new Insets(30, 0, 0, 0);
-		container.add(jTextArea_remark2, gridBagConstraints_19);
+		jTextArea_remark2.setLineWrap(true);
+		container.add(new JScrollPane(jTextArea_remark2), gridBagConstraints_19);
 		
 		GridBagConstraints gridBagConstraints_20 = new GridBagConstraints();
 		gridBagConstraints_20.gridy=6;
@@ -279,6 +302,10 @@ StudentDao studentDao = new StudentDaoImpl();
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
+				/*
+				 * 修改student table
+				 */
 				Student student = new Student();
 				student.setStu_name(jTextField_name2.getText());
 				student.setStu_birthDate(jTextField_birthdate2.getText());
@@ -293,6 +320,19 @@ StudentDao studentDao = new StudentDaoImpl();
 				StudentDao studentDao = new StudentDaoImpl();
 				studentDao.changeStu(student, jTextField_name1.getText());
 			
+				
+				/*
+				 * 修改account_infotable;
+				 */
+				PaymentDao paymentDao = new PaymentDaoImpl();
+			   // Payment payment = new Payment();
+			    List<Payment> list_payment=paymentDao.MoneyandTime(jTextField_name1.getText());
+			    
+			    list_payment.get(0).setName(jTextField_name2.getText());
+			    paymentDao.ChangeMoneyandTime(list_payment.get(0));
+			    
+				
+				
 				JOptionPane.showMessageDialog(null, "学员信息更新完成", "222", JOptionPane.ERROR_MESSAGE); 
 			}
 		});

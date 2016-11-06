@@ -226,8 +226,7 @@ public class StudentManagementInfoLook extends JDialog {
 		gridBagConstraints_19.fill = GridBagConstraints.BOTH;
 		gridBagConstraints_19.insets = new Insets(30, 0, 0, 0);
 		//jTextArea_remark2.setEditable(false);
-		jTextArea_remark2.setLineWrap(true);
-		
+		jTextArea_remark2.setLineWrap(true);		
 		container.add(new JScrollPane(jTextArea_remark2), gridBagConstraints_19);
 		
 		GridBagConstraints gridBagConstraints_20 = new GridBagConstraints();

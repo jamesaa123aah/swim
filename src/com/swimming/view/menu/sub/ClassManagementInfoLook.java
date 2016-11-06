@@ -29,7 +29,7 @@ public class ClassManagementInfoLook extends JDialog {
 	JComboBox jComboBox_classID = new JComboBox();
 	
 	JLabel jLabel_coachName = new JLabel("教练名：");
-	JLabel jLabel_coachName2 = new JLabel("王一飞教练");
+	JLabel jLabel_coachName2 = new JLabel("    ");
 	
 	JLabel jLabel_money = new JLabel("费用(RMB/次):");
 	JLabel jLabel_money2 = new JLabel("100");
@@ -55,7 +55,18 @@ public class ClassManagementInfoLook extends JDialog {
 		gridBagConstraints_1.ipadx=70;
 		gridBagConstraints_1.insets = new Insets(20, 0, 0, 0);
 		gridBagConstraints_1.fill = GridBagConstraints.HORIZONTAL;
-		container.add(jTextField_className,gridBagConstraints_1);
+		/*
+		 * 
+		 * 在选择班级时候
+		 * 从数据库提供已有的班级
+		 */
+		CourseDao courseDao = new CourseDaoImpl();
+		List<Course> list_class=courseDao.allClass();
+		
+		for (int i = 0;i<list_class.size();i++) {
+			jComboBox_className.addItem(list_class.get(i).getClass_name());
+		}
+		container.add(jComboBox_className,gridBagConstraints_1);
 		
 		GridBagConstraints gridBagConstraints_2 = new GridBagConstraints();
 		gridBagConstraints_2.gridy=1;
@@ -123,7 +134,7 @@ public class ClassManagementInfoLook extends JDialog {
 				List<Course> list = new LinkedList<>();
 				
 
-				list = courseDao.queryoneClass(jTextField_className.getText());
+				list = courseDao.queryoneClass((String) jComboBox_className.getSelectedItem());
 				
 				jLabel_coachName2.setText(list.get(0).getCoach_name());
 				

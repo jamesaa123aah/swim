@@ -15,14 +15,17 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.swimming.dao.CoachDao;
 import com.swimming.dao.CourseDao;
+import com.swimming.dao.Impl.CoachDaoImpl;
 import com.swimming.dao.Impl.CourseDaoImpl;
+import com.swimming.model.Coach;
 import com.swimming.model.Course;
 
 public class ClassManagementInfoChange extends JDialog {
 
 	JLabel jLabel_className = new JLabel("班级名：");
-	JComboBox jComboBox_className = new JComboBox();
+	JComboBox jComboBox_className1 = new JComboBox();
 	JTextField jTextField_className1 = new JTextField();
 	
 	JButton jButton_search = new JButton("查看");
@@ -60,7 +63,20 @@ public class ClassManagementInfoChange extends JDialog {
 		gridBagConstraints_1.ipadx=100;
 		gridBagConstraints_1.insets = new Insets(20, 0, 0, 0);
 		gridBagConstraints_1.fill = GridBagConstraints.HORIZONTAL;
-		container.add(jTextField_className1,gridBagConstraints_1);
+		/*
+		 * 
+		 * 在选择班级时候
+		 * 从数据库提供已有的班级
+		 */
+		CourseDao courseDao = new CourseDaoImpl();
+		List<Course> list_class=courseDao.allClass();
+		
+		for (int i = 0;i<list_class.size();i++) {
+			jComboBox_className1.addItem(list_class.get(i).getClass_name());
+		}
+		container.add(jComboBox_className1,gridBagConstraints_1);
+		
+		
 		
 		GridBagConstraints gridBagConstraints_2 = new GridBagConstraints();
 		gridBagConstraints_2.gridy=1;
@@ -91,6 +107,7 @@ public class ClassManagementInfoChange extends JDialog {
 		gridBagConstraints_5.ipadx=100;
 		gridBagConstraints_5.insets = new Insets(80, 0, 0, 0);
 		gridBagConstraints_5.fill = GridBagConstraints.HORIZONTAL;
+		jTextField_className2.setEditable(false);
 		container.add(jTextField_className2,gridBagConstraints_5);
 		
 		GridBagConstraints gridBagConstraints_55 = new GridBagConstraints();
@@ -130,10 +147,9 @@ public class ClassManagementInfoChange extends JDialog {
 		gridBagConstraints_8.gridx=1;
 		gridBagConstraints_8.ipadx=100;
 		gridBagConstraints_8.insets = new Insets(20, 0, 0, 0);
-		gridBagConstraints_8.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints_8.fill = GridBagConstraints.HORIZONTAL;		
 		//container.add(jComboBox_coachName,gridBagConstraints_8);
 		container.add(jTextField_coachName,gridBagConstraints_8);
-		
 		
 //		查询按钮
 		jButton_search.addActionListener(new ActionListener() {
@@ -147,9 +163,12 @@ public class ClassManagementInfoChange extends JDialog {
 				List<Course> list = new LinkedList<>();
 				
 
-				list = courseDao.queryoneClass(jTextField_className1.getText());
+				list = courseDao.queryoneClass((String) jComboBox_className1.getSelectedItem());
 				
 				jTextField_className2.setText(list.get(0).getClass_name());
+				
+				
+				
 				jTextField_coachName.setText(list.get(0).getCoach_name());
 				
 				
@@ -170,8 +189,9 @@ public class ClassManagementInfoChange extends JDialog {
 				Course course = new Course();
 				course.setClass_name(jTextField_className2.getText());
 				course.setCoach_name(jTextField_coachName.getText());
-				courseDao.updateClass(course, jTextField_className1.getText());
-			
+				courseDao.updateClass(course, (String) jComboBox_className1.getSelectedItem());
+			     
+				dispose();
 			}
 		});
 		

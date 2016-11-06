@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -79,51 +80,54 @@ public class JPanleThird  implements TableModelListener{
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		// TODO Auto-generated method stub
-//		int row = e.getFirstRow();
-//		int column = e.getColumn();
-//		
-//		if(column==1){
-//			Boolean boolean1 = (Boolean) my.getValueAt(row, column);
-//			System.out.println(boolean1);
-////		Student student = new Student();
-////		student.setStu_name((String) my.getValueAt(row, column-1));
-////			listOneKey.add(student);
-//			
-//		}else if (column == 2) {
-//			
-//			my.setValueAt(my.getValueAt(row, column), row, column-1);
-//			
-//		}
-//		
-//		else{
-//			String tem = (String) my.getValueAt(row, column);
-//			System.out.println(tem);
-//		}
+
 		
+			
+		/*
+		 * 每个学员的单次考勤
+		 * 手动输入
+		 * 如果是正常考勤输入0
+		 * 如果是漏打卡输入1
+		 * 将数据存入考勤表\
+		 * 注意目前只有实现单日的考勤，单日不能打其他天的考勤
+		 * (BUGBUGBUG!!!!!!!!!!!!!!!!)
+		 */
+		
+		AttendanceDao attendanceDao = new AttendanceDaoImpl();
+		Attendance attendance = new Attendance();
+		
+		int row = e.getFirstRow();
+	    int column = e.getColumn();
+	  	   
+	   String tem =my.getValueAt(row, column).toString();
+	   
+	    if(column>3&&tem.equals("0")){
+	    	System.out.println("0000");	 
+	    	attendance.setStu_name((String) my.getValueAt(row, 0));
+	    	attendance.setForget(0);
+	    	attendanceDao.stuAttend(attendance);
+	    	
+	    }else if (column>3&&tem.equals("1")) {
+	    	System.out.println("111");	 
+	    	attendance.setStu_name((String) my.getValueAt(row, 0));
+	    	attendance.setForget(1);
+	    	attendanceDao.stuAttend(attendance);
+		} else {
+			
+			    if(column>3&&!tem.equals("")){
+			    	JOptionPane.showMessageDialog(null,"只能输入0和1", "操作不合法", JOptionPane.INFORMATION_MESSAGE);	
+			    	my.setValueAt("", row, column);
+			    	System.out.println("tttt");
+			    }
+			  				
+				}
+	    
 	}
 
 	public class MyTableModel extends AbstractTableModel{
 
 	
-//		public List<Student> getListOnekey() {
-//			
-//			//一健考勤的list
-//			 List<Student> listOneKey = new LinkedList<Student>();
-//			//扫描table	
-//			//int a = my.getRowCount();
-//			//System.out.println(a);
-//			for (int i = 0; i < 5; i++) {
-//				if((Boolean)my.getValueAt(i, 1)==true){
-//					Student student = new Student();
-//					student.setStu_name((String)my.getValueAt(i, 0));
-//					listOneKey.add(student);
-//				}
-//			}
-//			
-//			System.out.println(listOneKey.get(0).getStu_name());
-//			return listOneKey;
-//			
-//		}
+
 		
 		
 		String[] columnNames =
@@ -169,7 +173,7 @@ public class JPanleThird  implements TableModelListener{
 						data[i][j] = listPayments.get(0).getTimes();						
 						break;  
 					default:
-						data[i][j]=" ";
+						data[i][j]="";
 						break;
 					}
 				}
