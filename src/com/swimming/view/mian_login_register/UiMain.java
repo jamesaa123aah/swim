@@ -54,8 +54,8 @@ public class UiMain extends JFrame{
 		
 		
 //		返回第一个面板到主界面
-		JpanelFirst jpanelFirst = new JpanelFirst();
-		JPanel jPanel1 = jpanelFirst.getJPanel();
+		//JPanel jpanelFirst = JpanelFirst.getJPanel();
+		JPanel jPanel1 = JpanelFirst.getJPanel();
 				
 //		返回第二个面板到主界面
 		JPanelSecond jPanelSecond= new JPanelSecond();

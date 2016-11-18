@@ -9,4 +9,6 @@ public interface AttendanceDao {
 	public List Attendance();
 	public List forgetAttendance();
 	public void setForgetToAttendance(int attendance_number);
+	public List nameSortList();
+	public List DateSortList();
 }

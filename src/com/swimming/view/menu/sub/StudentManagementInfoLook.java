@@ -23,8 +23,11 @@ import javax.swing.JTextField;
 
 import org.omg.CORBA.PRIVATE_MEMBER;
 
+import com.swimming.dao.PaymentDao;
 import com.swimming.dao.StudentDao;
+import com.swimming.dao.Impl.PaymentDaoImpl;
 import com.swimming.dao.Impl.StudentDaoImpl;
+import com.swimming.model.Payment;
 import com.swimming.model.Student;
 
 public class StudentManagementInfoLook extends JDialog {
@@ -40,28 +43,31 @@ public class StudentManagementInfoLook extends JDialog {
 	JComboBox jComboBox_id = new JComboBox<>();
 	
 	JLabel jLabel_name1 = new JLabel("姓名：");
-	JLabel jLabel_name2 = new JLabel("张华");
+	JLabel jLabel_name2 = new JLabel("");
 	
 	JLabel jLabel_sex1 = new JLabel("性别：");
 	JLabel jLabel_sex2 = new JLabel("男");
 	
 	JLabel jLabel_birhdate1 = new JLabel("出生年月：");
-	JLabel jLabel_birhdate2 = new JLabel("1995-10-08");
+	JLabel jLabel_birhdate2 = new JLabel("");
 	
 	JLabel jLabel_school1 = new JLabel("学校：");
-	JLabel jLabel_school2 = new JLabel("四川大学");
+	JLabel jLabel_school2 = new JLabel("");
 	
 	JLabel jLabel_phone1 = new JLabel("电话：");
-	JLabel jLabel_phone2 = new JLabel("13456789648");
+	JLabel jLabel_phone2 = new JLabel("");
 	
-	JLabel jLabel_class1 = new JLabel("班级：");
-	JLabel jLabel_class2 = new JLabel("杨经飞教练班");
+	JLabel jLabel_class1 = new JLabel("班     级：");
+	JLabel jLabel_class2 = new JLabel("");
 	
 	JLabel jLabel_money1 = new JLabel("余额(RMB)：");
-	JLabel jLabel_money2 = new JLabel("3478");
+	JLabel jLabel_money2 = new JLabel("");
+	JTextField jTextField_money2 = new JTextField();
+	
 	
 	JLabel jLabel_times1 = new JLabel("次数：");
-	JLabel jLabel_times2 = new JLabel("26");
+	JLabel jLabel_times2 = new JLabel("");
+	JTextField jTextField_times2 = new JTextField();
 	
 	JLabel jLabel_remark1 = new JLabel("备注：");
 	JTextArea jTextArea_remark2 = new JTextArea(60, 50);
@@ -70,6 +76,15 @@ public class StudentManagementInfoLook extends JDialog {
 	
 	public StudentManagementInfoLook() {
 		// TODO Auto-generated constructor stub
+		jTextField_money2.setEditable(false);
+		jTextField_times2.setEditable(false);
+		/*
+		 * 回车键
+		 * 监听登录
+		 * 11/16
+		 */
+		this.getRootPane().setDefaultButton(jButton);
+		
 		  setLayout(new GridBagLayout());// 设置网格组布局
 		  Container container = getContentPane();
 		   
@@ -84,7 +99,7 @@ public class StudentManagementInfoLook extends JDialog {
 		gridBagConstraints_1.gridy = 0;
 		gridBagConstraints_1.gridx = 1;
 		gridBagConstraints_1.insets = new Insets(0, 0, 0, 0);
-		gridBagConstraints_1.weightx = 80;
+		//gridBagConstraints_1.weightx = 80;
 		gridBagConstraints_1.fill = GridBagConstraints.HORIZONTAL;
 		//container.add(jComboBox_name,gridBagConstraints_1);
 		container.add(jTextField_name, gridBagConstraints_1);
@@ -99,16 +114,16 @@ public class StudentManagementInfoLook extends JDialog {
 		gridBagConstraints_2.gridx=2;
 		gridBagConstraints_2.insets = new Insets(0, 60, 0, 0);
 		gridBagConstraints_2.fill=GridBagConstraints.HORIZONTAL;
-		container.add(jLabel_id,gridBagConstraints_2);
+		container.add(jButton,gridBagConstraints_2);
 		
 		
 		GridBagConstraints gridBagConstraints_3 = new GridBagConstraints();
 		gridBagConstraints_3.gridy=0;
 		gridBagConstraints_3.gridx=3;
-		gridBagConstraints_3.weightx=20;
-		gridBagConstraints_3.insets = new Insets(0, 0, 0, 0);
+		//gridBagConstraints_3.weightx=20;
+		//gridBagConstraints_3.insets = new Insets(30, 0, 0, 0);
 		gridBagConstraints_3.fill = GridBagConstraints.HORIZONTAL;
-		container.add(jComboBox_id,gridBagConstraints_3);
+		//container.add(jButton,gridBagConstraints_3);
 		
 		GridBagConstraints gridBagConstraints_4 = new GridBagConstraints();
 		gridBagConstraints_4.gridy=1;
@@ -187,28 +202,29 @@ public class StudentManagementInfoLook extends JDialog {
 		gridBagConstraints_14.gridx=0;
 		gridBagConstraints_14.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints_14.insets = new Insets(30, 0, 0, 0);
-		//container.add(jLabel_money1, gridBagConstraints_14);
+		container.add(jLabel_money1, gridBagConstraints_14);
 		
 		GridBagConstraints gridBagConstraints_15 = new GridBagConstraints();
 		gridBagConstraints_15.gridy=4;
 		gridBagConstraints_15.gridx=1;
 		gridBagConstraints_15.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints_15.insets = new Insets(30, 0, 0, 0);
-		//container.add(jLabel_money2, gridBagConstraints_15);
+		container.add(jTextField_money2, gridBagConstraints_15);
 		
 		GridBagConstraints gridBagConstraints_16 = new GridBagConstraints();
 		gridBagConstraints_16.gridy=4;
 		gridBagConstraints_16.gridx=2;
 		gridBagConstraints_16.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints_16.insets = new Insets(30, 60, 0, 0);
-		//container.add(jLabel_times1, gridBagConstraints_16);
+		container.add(jLabel_times1, gridBagConstraints_16);
 		
 		GridBagConstraints gridBagConstraints_17 = new GridBagConstraints();
 		gridBagConstraints_17.gridy=4;
 		gridBagConstraints_17.gridx=3;
 		gridBagConstraints_17.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints_17.ipadx=70;
 		gridBagConstraints_17.insets = new Insets(30, 0, 0, 0);
-		//container.add(jLabel_times2, gridBagConstraints_17);
+		container.add(jTextField_times2, gridBagConstraints_17);
 		
 		GridBagConstraints gridBagConstraints_18 = new GridBagConstraints();
 		gridBagConstraints_18.gridy=5;
@@ -221,8 +237,8 @@ public class StudentManagementInfoLook extends JDialog {
 		gridBagConstraints_19.gridy=5;
 		gridBagConstraints_19.gridx=1;
 		//gridBagConstraints_19.gridheight=80;
-		gridBagConstraints_19.ipady=80;
-		gridBagConstraints_19.ipadx=50;
+		gridBagConstraints_19.ipady=100;
+		gridBagConstraints_19.ipadx=100;
 		gridBagConstraints_19.fill = GridBagConstraints.BOTH;
 		gridBagConstraints_19.insets = new Insets(30, 0, 0, 0);
 		//jTextArea_remark2.setEditable(false);
@@ -232,9 +248,9 @@ public class StudentManagementInfoLook extends JDialog {
 		GridBagConstraints gridBagConstraints_20 = new GridBagConstraints();
 		gridBagConstraints_20.gridy=6;
 		gridBagConstraints_20.gridx=3;
-		gridBagConstraints_19.weighty=30;
+		//gridBagConstraints_19.weighty=30;
 		gridBagConstraints_20.fill = GridBagConstraints.HORIZONTAL;
-		container.add(jButton,gridBagConstraints_20);
+		//container.add(jButton,gridBagConstraints_20);
 		
 		
 //		按钮响应
@@ -247,9 +263,11 @@ public class StudentManagementInfoLook extends JDialog {
 
 			
 				StudentDao studentDao = new StudentDaoImpl();
+				PaymentDao paymentDao = new PaymentDaoImpl();
 				//JOptionPane.showMessageDialog(null, "bbbbb", "11111", JOptionPane.ERROR_MESSAGE); 
 				
 				List<Student> list2 = studentDao.allStudent();
+				
 				
 //				不存在数据
 				int tem = 0;
@@ -260,6 +278,7 @@ public class StudentManagementInfoLook extends JDialog {
 				}
 				if(tem==1){
 				List<Student> list  = studentDao.getLookStu(jTextField_name.getText());
+				List<Payment> list_payment = paymentDao.MoneyandTime(jTextField_name.getText());
 				
 				jLabel_sex2.setText( list.get(0).getStu_sex());		
 				jLabel_school2.setText((String) list.get(0).getStu_school());
@@ -268,6 +287,11 @@ public class StudentManagementInfoLook extends JDialog {
 				jTextArea_remark2.setText((String) list.get(0).getStu_remark());
 			    jLabel_class2.setText(list.get(0).getClass_name());
 				
+			    /*
+			     * 查看钱和次数11/17
+			     */
+			    jTextField_money2.setText(String.valueOf(list_payment.get(0).getMoney()));
+				jTextField_times2.setText(String.valueOf(list_payment.get(0).getTimes()));
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "该学学员不存在", "11111", JOptionPane.ERROR_MESSAGE); 

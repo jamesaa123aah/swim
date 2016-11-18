@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -33,6 +34,7 @@ public class CoachManagementIncrease extends JDialog {
 	JComboBox jComboBox2 = new JComboBox(get_year());
 	JComboBox jComboBox3 = new JComboBox(get_month());
 	JComboBox jComboBox_birth_date = new JComboBox<>(array_date);
+	JTextField jTextField_birth_date = new JTextField(8);
 	
 	JLabel jLabel_phone = new JLabel("电话：");
 	JTextField jTextField_phone = new JTextField(8);
@@ -68,9 +70,10 @@ public class CoachManagementIncrease extends JDialog {
 		jLabel_birth_date.setSize(60, 25);
 		jLabel_birth_date.setLocation(5, 60);
 		add(jLabel_birth_date);
-		jComboBox_birth_date.setSize(100, 30);
-		jComboBox_birth_date.setLocation(65, 60);
-		add(jComboBox_birth_date);
+		jTextField_birth_date.setSize(100, 30);
+		jTextField_birth_date.setLocation(65, 60);
+		//add(jComboBox_birth_date);
+		add(jTextField_birth_date);
 		
 //		增加电话输入
 		jLabel_phone.setSize(40, 25);
@@ -120,8 +123,8 @@ public class CoachManagementIncrease extends JDialog {
 				
 				CoachDao coachDao = new CoachDaoImpl();
 				coachDao.addCoach(coach);
-				
-				dispose();
+				JOptionPane.showMessageDialog(null,"新增成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+				//dispose();
 			}
 		});
 		
@@ -145,7 +148,7 @@ public class CoachManagementIncrease extends JDialog {
  		list_coach.add(jTextField_name.getText());
 		list_coach.add((String)jComboBox_sex.getSelectedItem());
 		list_coach.add(jTextField_phone.getText());
-		list_coach.add((String)jComboBox_birth_date.getSelectedItem());
+		list_coach.add(jTextField_birth_date.getText());
 		list_coach.add(jTextArea_remark.getText());
 		
 		

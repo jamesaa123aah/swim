@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.xml.soap.Detail;
 
@@ -19,20 +20,23 @@ import com.swimming.dao.Impl.DetailOfAccountDaoImpl;
 import com.swimming.dao.Impl.PaymentDaoImpl;
 import com.swimming.model.DetailsOfAccount;
 import com.swimming.model.Payment;
+import com.swimming.view.panel.JPanleThird;
 
 public class MoneyManagement extends JDialog{
 
 	JLabel jLabel_name = new JLabel("姓名：");
 	JLabel jLabel_money1 = new JLabel("金额(RMB):");
-	JLabel jLabel_money1_show = new JLabel(" 1");
+	JLabel jLabel_money1_show = new JLabel("   ");
 	JLabel jLabel_times1 = new JLabel("次数:");
-	JLabel jLabel_time1_show = new JLabel("  01");
+	JLabel jLabel_time1_show = new JLabel("  ");
 	
 	JLabel jLabel_money = new JLabel("金额(RMB):");
 	JLabel jLabel_times = new JLabel("次数:");
 	
 //	combobox内容
-	String arry_times[]={"1","2","3","4","5","6","7","8","9","10"};
+	String arry_times[]={"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"
+			,"18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37",
+			"38","39","40","41","42","43","44","45","46","47","48","49","50"};
 	
 	
 	
@@ -53,8 +57,17 @@ public class MoneyManagement extends JDialog{
 //		jComboBox_name.setSize(100, 20);
 //		jComboBox_name.setLocation(45, 10);
 //		add(jComboBox_name);
+		
 		jTextField_name.setSize(100, 20);
 		jTextField_name.setLocation(45, 10);
+		/*
+		 * 11/17
+		 * 选中学员
+		 * 进行缴费
+		 */
+		if(JPanleThird.table.getSelectedRow()>=0)
+		jTextField_name.setText((String) JPanleThird.my.getValueAt(JPanleThird.table.getSelectedRow(), 0));
+		
 		add(jTextField_name);
 		
 		
@@ -102,6 +115,15 @@ public class MoneyManagement extends JDialog{
 		jButton_confirm.setLocation(150, 180);
 		
 		add(jButton_confirm);
+		
+
+		/*
+		 * 回车键
+		 * 监听登录
+		 * 11/16
+		 */
+		this.getRootPane().setDefaultButton(jButton_search);
+		
 		
 		jButton_search.addActionListener(new ActionListener() {
 			
@@ -155,8 +177,9 @@ public class MoneyManagement extends JDialog{
 				DetailOfAccountDao detailOfAccountDao = new DetailOfAccountDaoImpl();
 				
 				detailOfAccountDao.DetailsAccount(detailsOfAccount);
+				JOptionPane.showMessageDialog(null,"缴费成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
 				
-				
+				dispose();
 			}
 		});
 		

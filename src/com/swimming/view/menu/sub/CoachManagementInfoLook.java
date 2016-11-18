@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -23,7 +24,7 @@ import com.swimming.model.Coach;
 public class CoachManagementInfoLook extends JDialog {
 
 	JLabel jLabel_name = new JLabel("姓名：");
-	//JComboBox jComboBox_name = new JComboBox<>();
+	JComboBox jComboBox_name = new JComboBox<>();
 	JTextField jTextField_name = new JTextField();
 	
 	//JLabel jLabel_id = new JLabel("教练号：");
@@ -31,16 +32,16 @@ public class CoachManagementInfoLook extends JDialog {
 	
 	
 	JLabel jLabel_name1 = new JLabel("姓名：");
-	JLabel jLabel_name2 = new JLabel("张华");
+	JLabel jLabel_name2 = new JLabel("");
 	
 	JLabel jLabel_sex1 = new JLabel("性别：");
-	JLabel jLabel_sex2 = new JLabel("男");
+	JLabel jLabel_sex2 = new JLabel("");
 	
 	JLabel jLabel_birhdate1 = new JLabel("出生年月：");
-	JLabel jLabel_birhdate2 = new JLabel("1995-10-08");
+	JLabel jLabel_birhdate2 = new JLabel("");
 	
 	JLabel jLabel_phone1 = new JLabel("电话：");
-	JLabel jLabel_phone2 = new JLabel("13456789648");
+	JLabel jLabel_phone2 = new JLabel("");
 	
 	
 	JLabel jLabel_remark1 = new JLabel("备注：");
@@ -51,6 +52,12 @@ public class CoachManagementInfoLook extends JDialog {
 	
 	public CoachManagementInfoLook() {
 		// TODO Auto-generated constructor stub
+		/*
+		 * 回车键
+		 * 监听登录
+		 * 11/16
+		 */
+		this.getRootPane().setDefaultButton(jButton);
 		
    setLayout(new GridBagLayout());		
    Container container = getContentPane();
@@ -66,16 +73,29 @@ public class CoachManagementInfoLook extends JDialog {
 	gridBagConstraints_1.gridy = 0;
 	gridBagConstraints_1.gridx = 1;
 	gridBagConstraints_1.insets = new Insets(0, 0, 0, 0);
-	gridBagConstraints_1.weightx = 20;
 	gridBagConstraints_1.fill = GridBagConstraints.HORIZONTAL;
-	//container.add(jComboBox_name,gridBagConstraints_1);
-	container.add(jTextField_name,gridBagConstraints_1);
+	
+	/*
+	 * 将目前有的教练
+	 * 全部列出
+	 * 在添加班级的时候进行选择
+	 * 11/6
+	 * 19:34
+	 */
+	CoachDao coachDao = new CoachDaoImpl();
+	List<Coach> list_allCoach = coachDao.allCoach();
+	
+	for (int i = 0; i < list_allCoach.size(); i++) {
+		jComboBox_name.addItem(list_allCoach.get(i).getCoach_name());
+	}
+	container.add(jComboBox_name,gridBagConstraints_1);
+	//container.add(jTextField_name,gridBagConstraints_1);
 	
 	
 	GridBagConstraints gridBagConstraints_2 = new GridBagConstraints();
 	gridBagConstraints_2.gridy=0;
 	gridBagConstraints_2.gridx=2;
-	gridBagConstraints_2.insets = new Insets(0, 60, 0, 0);
+	gridBagConstraints_2.insets = new Insets(0, 30, 0, 0);
 	gridBagConstraints_2.fill=GridBagConstraints.HORIZONTAL;
 	//container.add(jLabel_id,gridBagConstraints_2);
 	
@@ -105,7 +125,7 @@ public class CoachManagementInfoLook extends JDialog {
 	GridBagConstraints gridBagConstraints_6 = new GridBagConstraints();
 	gridBagConstraints_6.gridy=1;
 	gridBagConstraints_6.gridx=2;
-	gridBagConstraints_6.insets = new Insets(30, 60, 0, 0);
+	gridBagConstraints_6.insets = new Insets(30, 30, 0, 0);
 	gridBagConstraints_6.fill = GridBagConstraints.HORIZONTAL;
 	container.add(jLabel_birhdate1, gridBagConstraints_6);
 	
@@ -140,13 +160,15 @@ public class CoachManagementInfoLook extends JDialog {
 	GridBagConstraints gridBagConstraints_11 = new GridBagConstraints();
 	gridBagConstraints_11.gridy=3;
 	gridBagConstraints_11.gridx=1;
-	gridBagConstraints_11.ipady=120;
+	gridBagConstraints_11.ipady=100;
+	gridBagConstraints_11.ipadx=100;
 	gridBagConstraints_11.fill = GridBagConstraints.HORIZONTAL;
 	gridBagConstraints_11.insets = new Insets(30, 0, 0, 0);
-	container.add(jTextArea_remark2, gridBagConstraints_11);
+	jTextArea_remark2.setLineWrap(true);
+	container.add(new JScrollPane(jTextArea_remark2), gridBagConstraints_11);
 	
 	GridBagConstraints gridBagConstraints_12 = new GridBagConstraints();
-	gridBagConstraints_12.gridy=4;
+	gridBagConstraints_12.gridy=0;
 	gridBagConstraints_12.gridx=3;
 	gridBagConstraints_12.weighty=30;
 	gridBagConstraints_12.fill = GridBagConstraints.HORIZONTAL;
@@ -161,7 +183,7 @@ public class CoachManagementInfoLook extends JDialog {
 			
 			CoachDao coachDao = new CoachDaoImpl();
 			List<Coach> list = new LinkedList();
-			list=coachDao.queryoneCoach(jTextField_name.getText());
+			list=coachDao.queryoneCoach((String) jComboBox_name.getSelectedItem());
 		
 			
 			jLabel_sex2.setText(list.get(0).getCoach_sex());

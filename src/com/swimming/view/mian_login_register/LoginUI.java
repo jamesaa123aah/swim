@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
@@ -35,6 +36,12 @@ public class LoginUI extends JDialog{
 	    container.add(jTextField2);
 		container.add(jButton1);
 		
+		/*
+		 * 回车键
+		 * 监听登录
+		 * 11/16
+		 */
+		this.getRootPane().setDefaultButton(jButton1);
 		
 //		登陆按钮监听事件
 		jButton1.addActionListener(new ActionListener() {
@@ -42,9 +49,16 @@ public class LoginUI extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				if(jTextField1.getText().equals("123")&&jTextField2.getText().equals("123")){
+					new UiMain();
+					dispose();
+				}
+					
+					
+				else
+					JOptionPane.showMessageDialog(null,"用户名或密码不正确", "失败", JOptionPane.INFORMATION_MESSAGE);	
+					
 				
-				new UiMain();
-				dispose();//本窗口销毁,释放内存资源
 						
 			}
 		});

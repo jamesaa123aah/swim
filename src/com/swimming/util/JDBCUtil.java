@@ -26,7 +26,8 @@ public class JDBCUtil {
 				Class.forName("com.mysql.jdbc.Driver");
 				
 				// 获取数据库的连接
-				 cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/swimming?user=root&password="+"&useUnicode=true&characterEncoding=utf-8");
+				 cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/swimming?user=root&password="
+				 		+ ""+"&useUnicode=true&characterEncoding=utf-8");
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

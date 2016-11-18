@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.swimming.dao.CoachDao;
@@ -149,7 +150,23 @@ public class ClassManagementInfoChange extends JDialog {
 		gridBagConstraints_8.insets = new Insets(20, 0, 0, 0);
 		gridBagConstraints_8.fill = GridBagConstraints.HORIZONTAL;		
 		//container.add(jComboBox_coachName,gridBagConstraints_8);
+		/*
+		 * 将目前有的教练
+		 * 全部列出
+		 * 在添加班级的时候进行选择
+		 * 11/6
+		 */
+//		CoachDao coachDao = new CoachDaoImpl();
+//		Coach coach = new Coach();
+//		List<Coach> list_allCoach = coachDao.allCoach();
+//		
+//		for (int i = 0; i < list_allCoach.size(); i++) {
+//			jComboBox_coachName.addItem(list_allCoach.get(i).getCoach_name());
+//		}
+		//jComboBox_coachName.set
 		container.add(jTextField_coachName,gridBagConstraints_8);
+		
+		
 		
 //		查询按钮
 		jButton_search.addActionListener(new ActionListener() {
@@ -190,8 +207,8 @@ public class ClassManagementInfoChange extends JDialog {
 				course.setClass_name(jTextField_className2.getText());
 				course.setCoach_name(jTextField_coachName.getText());
 				courseDao.updateClass(course, (String) jComboBox_className1.getSelectedItem());
-			     
-				dispose();
+				JOptionPane.showMessageDialog(null,"修改成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+//				dispose();
 			}
 		});
 		

@@ -1,6 +1,7 @@
 package com.swimming.view.menu;
 
 import java.awt.Button;
+import java.awt.Checkbox;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -45,13 +46,20 @@ public class DrainPunch extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
+				
+				//table.setRowSelectionInterval(1, 2);
+				
+				//table.setRowSelectionInterval(4, 4);
+				
+				//table.setRowSelectionInterval(6, 6);
+				
 				int row = table.getSelectedRow();
 				if(row == -1){
 					JOptionPane.showMessageDialog(null,"请选择要移除的数据!");
 				}else{
 					attendanceDao.setForgetToAttendance((int) table.getValueAt(row, 2));
 					model.removeRow(row);
-					
+				
 					
 				}
 			}
@@ -98,7 +106,8 @@ public class DrainPunch extends JDialog {
 		
 
 		model = new DefaultTableModel(tableValues, columnNames);
-	    table = new JTable(model);
+	         
+		table = new JTable(model);
 		
 						
 

@@ -26,6 +26,7 @@ import com.swimming.dao.Impl.StudentDaoImpl;
 import com.swimming.model.Course;
 import com.swimming.model.Payment;
 import com.swimming.model.Student;
+import com.swimming.view.panel.JPanleThird;
 
 public class StudentManagementInfochange extends JDialog{
 
@@ -59,13 +60,13 @@ public class StudentManagementInfochange extends JDialog{
 	
 	JLabel jLabel_class1 = new JLabel("班级：");
 	JComboBox jComboBox_class2 = new JComboBox<>();
-	JTextField jTextField_class2 = new JTextField();
+	//JTextField jTextField_class2 = new JTextField();
 	
 	JLabel jLabel_money1 = new JLabel("余额(RMB)：");
-	JTextField jTextField_money2 = new JTextField("466");
+	JTextField jTextField_money2 = new JTextField();
 	
 	JLabel jLabel_times1 = new JLabel("次数：");
-	JTextField jTextField_time2 = new JTextField("12");
+	JTextField jTextField_time2 = new JTextField();
 	
 	JLabel jLabel_remark1 = new JLabel("备注：");
 	JTextArea jTextArea_remark2 = new JTextArea(60, 75);
@@ -74,6 +75,21 @@ public class StudentManagementInfochange extends JDialog{
 	
 	
 	public StudentManagementInfochange() {
+		/*
+		 * 回车键
+		 * 监听登录
+		 * 11/16
+		 */
+		this.getRootPane().setDefaultButton(jButton_search);
+		
+		/*
+		 * 11/18
+		 * 选中学员
+		 * 进行修改学员信息
+		 */
+		if(JPanleThird.table.getSelectedRow()>=0)
+		jTextField_name1.setText((String) JPanleThird.my.getValueAt(JPanleThird.table.getSelectedRow(), 0));
+		
 		// TODO Auto-generated constructor stub		
 		setLayout(new GridBagLayout());// 设置网格组布局
 		Container container = getContentPane();
@@ -213,28 +229,28 @@ public class StudentManagementInfochange extends JDialog{
 		gridBagConstraints_14.gridx=0;
 		gridBagConstraints_14.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints_14.insets = new Insets(10, 0, 0, 0);
-		//container.add(jLabel_money1, gridBagConstraints_14);
+		container.add(jLabel_money1, gridBagConstraints_14);
 		
 		GridBagConstraints gridBagConstraints_15 = new GridBagConstraints();
 		gridBagConstraints_15.gridy=4;
 		gridBagConstraints_15.gridx=1;
 		gridBagConstraints_15.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints_15.insets = new Insets(10, 0, 0, 0);
-		//container.add(jTextField_money2, gridBagConstraints_15);
+		container.add(jTextField_money2, gridBagConstraints_15);
 		
 		GridBagConstraints gridBagConstraints_16 = new GridBagConstraints();
 		gridBagConstraints_16.gridy=4;
 		gridBagConstraints_16.gridx=2;
 		gridBagConstraints_16.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints_16.insets = new Insets(10, 60, 0, 0);
-		//container.add(jLabel_times1, gridBagConstraints_16);
+		container.add(jLabel_times1, gridBagConstraints_16);
 		
 		GridBagConstraints gridBagConstraints_17 = new GridBagConstraints();
 		gridBagConstraints_17.gridy=4;
 		gridBagConstraints_17.gridx=3;
 		gridBagConstraints_17.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints_17.insets = new Insets(10, 0, 0, 0);
-	//	container.add(jTextField_time2, gridBagConstraints_17);
+		container.add(jTextField_time2, gridBagConstraints_17);
 		
 		GridBagConstraints gridBagConstraints_18 = new GridBagConstraints();
 		gridBagConstraints_18.gridy=5;
@@ -246,12 +262,13 @@ public class StudentManagementInfochange extends JDialog{
 		GridBagConstraints gridBagConstraints_19 = new GridBagConstraints();
 		gridBagConstraints_19.gridy=5;
 		gridBagConstraints_19.gridx=1;
-		gridBagConstraints_19.ipady=80;
-		gridBagConstraints_19.ipadx=80;
+		gridBagConstraints_19.ipady=100;
+		gridBagConstraints_19.ipadx=100;
 		gridBagConstraints_19.fill = GridBagConstraints.BOTH;
 		gridBagConstraints_19.insets = new Insets(30, 0, 0, 0);
 		jTextArea_remark2.setLineWrap(true);
 		container.add(new JScrollPane(jTextArea_remark2), gridBagConstraints_19);
+		
 		
 		GridBagConstraints gridBagConstraints_20 = new GridBagConstraints();
 		gridBagConstraints_20.gridy=6;
@@ -267,7 +284,8 @@ public class StudentManagementInfochange extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-StudentDao studentDao = new StudentDaoImpl();
+         StudentDao studentDao = new StudentDaoImpl();
+         PaymentDao paymentDao = new PaymentDaoImpl();
 				
 				
 				List<Student> list2 = studentDao.allStudent();
@@ -281,6 +299,7 @@ StudentDao studentDao = new StudentDaoImpl();
 				}
 				if(tem==1){
 				List<Student> list  = studentDao.getLookStu(jTextField_name1.getText());
+				List<Payment> list_payment = paymentDao.MoneyandTime(jTextField_name1.getText());
 				
 				jTextField_name2.setText(list.get(0).getStu_name());
 				jComboBox_sex2.setSelectedItem((String) list.get(0).getStu_sex());
@@ -288,7 +307,26 @@ StudentDao studentDao = new StudentDaoImpl();
 				jTextField_phone2.setText((String) list.get(0).getStu_phone());
 				jTextField_birthdate2.setText((String) list.get(0).getStu_birthDate());
 				jTextArea_remark2.setText((String) list.get(0).getStu_remark());
-			    jTextField_class2.setText(list.get(0).getClass_name());
+	    
+				int index1=0;
+				while(true){
+					if(list.get(0).getClass_name().equals(jComboBox_class2.getItemAt(index1))){
+						jComboBox_class2.setSelectedItem(jComboBox_class2.getItemAt(index1));
+						break;
+					}
+					else {
+						index1++;
+					}
+					
+				}
+			    
+				/*
+			     * 查看钱和次数11/17
+			     */
+			    jTextField_money2.setText(String.valueOf(list_payment.get(0).getMoney()));
+				jTextField_time2.setText(String.valueOf(list_payment.get(0).getTimes()));
+				//jComboBox_class2.setSelectedItem(arg0);
+				// jTextField_class2.setText(list.get(0).getClass_name());
 				
 				}
 				else{
@@ -313,8 +351,8 @@ StudentDao studentDao = new StudentDaoImpl();
 				student.setStu_phone(jTextField_phone2.getText());
 				student.setStu_remark(jTextArea_remark2.getText());
 				student.setStu_school(jTextField_school2.getText());
-				student.setClass_name(jTextField_class2.getText());
-				
+				//student.setClass_name(jTextField_class2.getText());
+				student.setClass_name((String)jComboBox_class2.getSelectedItem());
 				
 				
 				StudentDao studentDao = new StudentDaoImpl();
@@ -324,16 +362,29 @@ StudentDao studentDao = new StudentDaoImpl();
 				/*
 				 * 修改account_infotable;
 				 */
-				PaymentDao paymentDao = new PaymentDaoImpl();
+				
 			   // Payment payment = new Payment();
-			    List<Payment> list_payment=paymentDao.MoneyandTime(jTextField_name1.getText());
-			    
-			    list_payment.get(0).setName(jTextField_name2.getText());
-			    paymentDao.ChangeMoneyandTime(list_payment.get(0));
+//			    List<Payment> list_payment=paymentDao.MoneyandTime(jTextField_name1.getText());
+//			    
+//			    list_payment.get(0).setName(jTextField_name2.getText());
+//			    paymentDao.ChangeMoneyandTime(list_payment.get(0));
 			    
 				
+			    /*
+			     * 修改学员的钱
+			     * 修改学员的次数
+			     * 11/17
+			     */
+				PaymentDao paymentDao = new PaymentDaoImpl();
+			    Payment payment = new Payment();
+			    payment.setMoney(Integer.parseInt(jTextField_money2.getText()));
+				payment.setTimes(Integer.parseInt((String)jTextField_time2.getText()));
+				payment.setName(jTextField_name2.getText());
 				
-				JOptionPane.showMessageDialog(null, "学员信息更新完成", "222", JOptionPane.ERROR_MESSAGE); 
+				paymentDao.ChangeMoneyandTime(payment);
+				
+				
+			    JOptionPane.showMessageDialog(null,"修改成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
 			}
 		});
 		

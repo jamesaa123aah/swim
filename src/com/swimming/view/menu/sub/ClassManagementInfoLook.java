@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.swimming.dao.CourseDao;
@@ -30,7 +31,7 @@ public class ClassManagementInfoLook extends JDialog {
 	
 	JLabel jLabel_coachName = new JLabel("教练名：");
 	JLabel jLabel_coachName2 = new JLabel("    ");
-	
+	JTextField jTextField_coachName2=new JTextField();
 	JLabel jLabel_money = new JLabel("费用(RMB/次):");
 	JLabel jLabel_money2 = new JLabel("100");
 	
@@ -122,7 +123,8 @@ public class ClassManagementInfoLook extends JDialog {
 		gridBagConstraints_8.ipadx=70;
 		gridBagConstraints_8.insets = new Insets(20, 0, 0, 0);
 		gridBagConstraints_8.fill = GridBagConstraints.HORIZONTAL;
-		container.add(jLabel_coachName2,gridBagConstraints_8);
+		jTextField_coachName2.setEditable(false);
+		container.add(jTextField_coachName2,gridBagConstraints_8);
 		
 		
 		jButton.addActionListener(new ActionListener() {
@@ -136,7 +138,7 @@ public class ClassManagementInfoLook extends JDialog {
 
 				list = courseDao.queryoneClass((String) jComboBox_className.getSelectedItem());
 				
-				jLabel_coachName2.setText(list.get(0).getCoach_name());
+				jTextField_coachName2.setText(list.get(0).getCoach_name());
 				
 			}
 		});

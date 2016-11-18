@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.swimming.dao.CourseDao;
@@ -94,6 +95,7 @@ public class ClassManagementDelete extends JDialog {
 				
 				//courseDao.deleteClass(jTextField_className.getText());
 				courseDao.deleteClass((String) jComboBox_class.getSelectedItem());
+				JOptionPane.showMessageDialog(null,"删除成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
 				//courseDao.deleteClass(cousre_name);
 			}
 		});

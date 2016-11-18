@@ -11,4 +11,6 @@ public interface StudentDao {
 	public List getLookStu(String stuName);
 	public void changeStu(Student student,String oldname);
 	public List allStudent(); 
+	public List mistStudent(String strName);
+	public List nameList();
 }

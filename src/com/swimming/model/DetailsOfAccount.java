@@ -30,6 +30,9 @@ public class DetailsOfAccount {
 	public void setAccount_operation_date(String account_operation_date) {
 		this.account_operation_date = account_operation_date;
 	}
+	public String setAccount_operation_date() {
+		return account_operation_date;
+	}
 	public String getDetails() {
 		return details;
 	}

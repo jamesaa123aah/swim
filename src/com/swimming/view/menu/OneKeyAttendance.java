@@ -5,10 +5,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,10 +21,17 @@ import javax.swing.table.AbstractTableModel;
 
 import com.*;
 import com.swimming.dao.AttendanceDao;
+import com.swimming.dao.DetailOfAccountDao;
+import com.swimming.dao.PaymentDao;
 import com.swimming.dao.Impl.AttendanceDaoImpl;
+import com.swimming.dao.Impl.DetailOfAccountDaoImpl;
+import com.swimming.dao.Impl.PaymentDaoImpl;
 import com.swimming.model.Attendance;
+import com.swimming.model.DetailsOfAccount;
+import com.swimming.model.Payment;
 import com.swimming.model.Student;
 import com.swimming.view.panel.JPanleThird;
+import com.swimming.view.panel.JpanelFirst;
 
 public class OneKeyAttendance extends JDialog  implements TableModelListener{
 
@@ -52,7 +62,7 @@ public class OneKeyAttendance extends JDialog  implements TableModelListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				//System.out.println();
+				
 				int m  = 0;
 				for (int i = 0; i <JPanleThird.my.getRowCount(); i++) {
 					
@@ -83,6 +93,12 @@ public class OneKeyAttendance extends JDialog  implements TableModelListener{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				
+				for (int i = 0; i < JPanleThird.my.getRowCount(); i++) {
+					JPanleThird.my.setValueAt(false, i, 1);
+					JPanleThird.my.setValueAt(false, i, 2);
+				}
+				
 			
                  Attendance attendance ;
                  AttendanceDao attendanceDao;
@@ -102,24 +118,96 @@ public class OneKeyAttendance extends JDialog  implements TableModelListener{
 //                    	 set漏打卡
                     	 if (myTableModelOnekey.getValueAt(i, 2)=="漏") {
                     		 attendance.setForget(1);
+                    		 Date date = new Date();
+                 			String nowTime1 = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                    		 attendance.setAttendance_date(nowTime1);
+                    		 
+                    		DetailsOfAccount detailsOfAccount = new DetailsOfAccount();
+                  			DetailOfAccountDao detailOfAccountDao = new DetailOfAccountDaoImpl();
+                  			detailsOfAccount.setstu_name((String) myTableModelOnekey.getValueAt(i, 0));
+                  			detailsOfAccount.setDetails("漏打卡");
+                  			
+                  			int rownumber=JPanleThird.my.getRowCount();
+                  			int times=0;
+                  			for(int j=0;j<rownumber;j++){
+                  				
+                  				if(JPanleThird.my.getValueAt(j, 0)==myTableModelOnekey.getValueAt(i, 0)){	            
+                  					times=(int) JPanleThird.my.getValueAt(j,3);
+                  					detailsOfAccount.setMoney(times-1);
+                  					
+                  					/*
+                  					 * 11/18不要求考勤导入明细
+                  					 */
+                  					//detailOfAccountDao.DetailsAccount(detailsOfAccount);
+                  					
+                  					
+                  					PaymentDao paymentDao = new PaymentDaoImpl();		
+                  			    	List<Payment> list=paymentDao.MoneyandTime((String)myTableModelOnekey.getValueAt(i, 0));
+                  			    	int money_time = list.get(0).getMoney()/list.get(0).getTimes();
+                  			    	
+                  			    	Payment payment = new Payment();
+                  			    	payment.setName((String)myTableModelOnekey.getValueAt(i, 0));
+                  			    	payment.setMoney(list.get(0).getMoney()-money_time);
+                  			    	payment.setTimes(list.get(0).getTimes()-1);
+                  			    	paymentDao.ChangeMoneyandTime(payment);
+                  			    	
+                  			    	
+                  			    	JPanleThird.my.setValueAt(Integer.parseInt(String.valueOf(JPanleThird.my.getValueAt(j, 3)))-1, j, 3);
+                  				}
+                  				
+                  			}
+                  			
     					}else {
     						attendance.setForget(0);
+    						Date date = new Date();
+                  			String nowTime1 = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                     		attendance.setAttendance_date(nowTime1);
+                     		 
+                     		DetailsOfAccount detailsOfAccount = new DetailsOfAccount();
+                   			DetailOfAccountDao detailOfAccountDao = new DetailOfAccountDaoImpl();
+                   			detailsOfAccount.setstu_name((String) myTableModelOnekey.getValueAt(i, 0));
+                   			detailsOfAccount.setDetails("正常考勤");
+                   			
+                   			int rownumber=JPanleThird.my.getRowCount();
+                   			int times=0;
+                   			for(int j=0;j<rownumber;j++){
+                   				
+                   				if(JPanleThird.my.getValueAt(j, 0)==myTableModelOnekey.getValueAt(i, 0)){	            
+                   					times=(int) JPanleThird.my.getValueAt(j,3);
+                   					detailsOfAccount.setMoney(times-1);
+                   					
+                   					//detailOfAccountDao.DetailsAccount(detailsOfAccount);
+                   					
+                   					
+                   					PaymentDao paymentDao = new PaymentDaoImpl();		
+                   			    	List<Payment> list=paymentDao.MoneyandTime((String)myTableModelOnekey.getValueAt(i, 0));
+                   			    	int money_time = list.get(0).getMoney()/list.get(0).getTimes();
+                   			    	
+                   			    	Payment payment = new Payment();
+                   			    	payment.setName((String)myTableModelOnekey.getValueAt(i, 0));
+                   			    	payment.setMoney(list.get(0).getMoney()-money_time);
+                   			    	payment.setTimes(list.get(0).getTimes()-1);
+                   			    	paymentDao.ChangeMoneyandTime(payment);
+                   			    	
+                   			    	
+                   			    	JPanleThird.my.setValueAt(Integer.parseInt(String.valueOf(JPanleThird.my.getValueAt(j, 3)))-1, j, 3);
+                   				}
+                   				
+                   			}
     					}
                     	     	 
+                    	 
+                    	
                     	 attendanceDao.stuAttend(attendance);
                 		 
                 	 }
-                	 
-                	 
-
-                
+                                 
                  
                  }
-                
-				
-				
-				
+             	 JOptionPane.showMessageDialog(null,"一健考勤成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+                 dispose();		
 			}
+						
 		});
 		
 		

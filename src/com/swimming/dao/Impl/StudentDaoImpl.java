@@ -6,11 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.swimming.model.Attendance;
 import com.swimming.model.Student;
 
 import javax.swing.JOptionPane;
@@ -240,4 +245,56 @@ public class StudentDaoImpl implements StudentDao {
 	
 	}
 
+	
+	public List mistStudent(String strName) {
+		// TODO Auto-generated method stub
+		List<Student> all_list=allStudent();
+		List<Student> mistlist=new ArrayList<Student>();
+		
+		int i=0;
+		//names负责把list中的名字取出来
+		String[] names=new String[all_list.size()];
+		for (Student student2 : all_list) {	
+			if(student2.getStu_name().matches(".*"+strName+".*")){
+				names[i]=student2.getStu_name().toString();
+				i=i+1;
+			}
+			
+		}
+		for (int j = 0; j < i; j++) {
+			for (Student student2 : all_list) {
+				if (names[j].equals(student2.getStu_name())) {
+					mistlist.add(student2);
+				}
+			}
+		}
+		return mistlist;
+	}
+
+	@Override
+	public List nameList() {
+		List<Student>list1=allStudent();
+		int m=0;
+		String[] names=new String[list1.size()];
+ 		for (Student student : list1) {
+			names[m]=student.getStu_name();
+			m=m+1;
+		}
+ 		Comparator<Object> cmp2 = Collator.getInstance(java.util.Locale.CHINA);  
+		Arrays.sort(names,cmp2);
+//		for (String string : names) {
+//			System.out.println(string.toString());
+//		}
+		//一个新的list，里面是排序好的list
+		List<Student> namelist=new ArrayList<Student>();
+		for (int j = 0; j < list1.size(); j++) {
+			for (Student a1 : list1) {
+				if (names[j].equals(a1.getStu_name())&&!namelist.contains(a1)) {
+					namelist.add(a1);
+				}
+			}
+		}
+ 		
+		return namelist;
+	}
 }

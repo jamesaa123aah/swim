@@ -75,11 +75,12 @@ public  class MenuA {
 		JMenuItem jMenuItem_coach_view = new JMenuItem("查看教练信息");
 //		菜单项--缴费管理
 		JMenuItem jMenuItem_money1 = new JMenuItem("缴费");
-		JMenuItem jMenuItem_money2 = new JMenuItem("查看明细");
+		
 //		菜单项--查看
 		JMenuItem jMenuItem_one_key = new JMenuItem("一健考勤表");
 		JMenuItem jMenuItem_forget = new JMenuItem("漏打表");
 		JMenuItem jMenuItem_static = new JMenuItem("统计表");
+		JMenuItem jMenuItem_money2 = new JMenuItem("查看明细");
 		
 		public  MenuA() {
 			// TODO Auto-generated constructor stub
@@ -126,11 +127,12 @@ public  class MenuA {
 		  jMenu5.add(jMenuItem_coach_view);
 //		  财务管理菜单里加菜单项
 		  jMenu6.add(jMenuItem_money1);
-		  jMenu6.add(jMenuItem_money2);
+		  //jMenu6.add(jMenuItem_money2);
 //		  查看菜单里加菜单项
 		  jMenu7.add(jMenuItem_one_key);
 		  jMenu7.add(jMenuItem_forget);
 		  jMenu7.add(jMenuItem_static);
+		  jMenu7.add(jMenuItem_money2);
 		  
 
 		  

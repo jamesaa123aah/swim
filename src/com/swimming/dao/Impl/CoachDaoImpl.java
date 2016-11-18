@@ -37,7 +37,7 @@ public class CoachDaoImpl implements CoachDao {
 			Date date =new Date();
 	        String nowTime1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
 	        
-	        stmt.setDate(4, new java.sql.Date(date.getTime()));
+	        stmt.setString(4, c.getCoach_birth_date());
 	        stmt.setString(5, c.getCoach_remark());
 	        
 	      

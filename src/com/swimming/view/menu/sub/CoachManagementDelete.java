@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.swimming.dao.CoachDao;
@@ -86,8 +87,9 @@ public class CoachManagementDelete extends JDialog {
 				System.out.println("1111111");
 //				学号暂时不使用
 				coachDao.deleteCoach((String) jComboBox_name.getSelectedItem());
-				System.out.println("222222");
-				dispose();
+				JOptionPane.showMessageDialog(null,"删除成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+//				System.out.println("222222");
+//				dispose();
 			}
 		});
 //		设置窗口

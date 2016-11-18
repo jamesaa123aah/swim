@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.swimming.dao.CoachDao;
@@ -85,7 +86,7 @@ public class ClassManagementIncrese extends JDialog {
 		}
 		
 		container.add(jComboBox_coachName,gridBagConstraints_3);
-		//container.add(jTextField_coachName, gridBagConstraints_3);
+//		container.add(jTextField_coachName, gridBagConstraints_3);
 		
 		GridBagConstraints gridBagConstraints_4 = new GridBagConstraints();
 		gridBagConstraints_4.gridy=2;
@@ -117,12 +118,13 @@ public class ClassManagementIncrese extends JDialog {
 				Course course = new Course();
 				
 				course.setClass_name(jTextField_className.getText());
-				course.setCoach_name(jTextField_coachName.getText());
+				//course.setCoach_name(jTextField_coachName.getText());
+				course.setCoach_name((String) jComboBox_coachName.getSelectedItem());
 				
 				CourseDao courseDao = new CourseDaoImpl();
 				courseDao.addClass(course);
-				
-				dispose();
+				JOptionPane.showMessageDialog(null,"新增成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+//				dispose();
 			}
 		});
 	

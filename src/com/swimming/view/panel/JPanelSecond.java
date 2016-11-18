@@ -20,6 +20,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -31,7 +32,7 @@ import com.swimming.dao.CourseDao;
 import com.swimming.dao.Impl.CourseDaoImpl;
 import com.swimming.model.Course;
 
-public class JPanelSecond  extends JFrame implements MouseListener, ActionListener {
+public class JPanelSecond  extends JFrame {
 
 	/*
 	 * 建立树
@@ -44,14 +45,7 @@ public class JPanelSecond  extends JFrame implements MouseListener, ActionListen
 		// TODO Auto-generated constructor stub
 		// TODO Auto-generated constructor stub
 		   DefaultMutableTreeNode root = new DefaultMutableTreeNode("全部学员");
-//			//创建一级子节点
-//			DefaultMutableTreeNode nodeFirst = new DefaultMutableTreeNode("西瓜班",false);
-//			root.add(nodeFirst);
-//			 
-//			//创建一级子节点
-//			DefaultMutableTreeNode nodeSecond = new DefaultMutableTreeNode("恐龙班",false);
-//			root.add(nodeSecond);
-//			
+	
 		
 //			数据库获取所有班级信息
 			CourseDao courseDao = new CourseDaoImpl();
@@ -69,16 +63,23 @@ public class JPanelSecond  extends JFrame implements MouseListener, ActionListen
 			treeRoot = new JTree(root);  
 	    	treeRoot.setEditable(true);  
 	    	treeRoot.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);  
-	    	treeRoot.addMouseListener(this);  
+	    	//treeRoot.addMouseListener(this);  
 	    	treeRoot.setCellEditor(new DefaultTreeCellEditor(treeRoot, new DefaultTreeCellRenderer()));  
 	    	
 	    	
-	    	popMenu = new JPopupMenu();  
-	    	addItem = new JMenuItem("添加一健考勤");  
-	    	addItem.addActionListener(this);  
-	      
-	    	
-	    	popMenu.add(addItem);  
+	    	treeRoot.addTreeSelectionListener(new TreeSelectionListener() {
+				
+				@Override
+				public void valueChanged(TreeSelectionEvent e) {
+					// TODO Auto-generated method stub
+					//DefaultMutableTreeNode note = (DefaultMutableTreeNode) treeRoot.getLastSelectedPathComponent();
+				   // String name = note.toString();//获得这个结点的名称
+				    //System.out.println(name);
+				    //JPanleThird.my.data=new Object[2][40];
+				    //JPanleThird.my.setValueAt("1", 4, 12);
+				    //JPanleThird.my.remove(4, 1);
+				}
+			});
 	    	
 	    	
 	    	
@@ -94,50 +95,27 @@ public class JPanelSecond  extends JFrame implements MouseListener, ActionListen
 		return  jPanel;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		JOptionPane.showMessageDialog(getContentPane(),"该班级加入一健考勤", "系统信息", JOptionPane.INFORMATION_MESSAGE);
-	}
+	
+	class A extends AbstractTableModel{
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
-	}
+		@Override
+		public int getColumnCount() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+		@Override
+		public int getRowCount() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		TreePath path = treeRoot.getPathForLocation(e.getX(), e.getY()); // 关键是这个方法的使用  
-		if (path == null) {  
-			   return;  
-			   }  
-		treeRoot.setSelectionPath(path);  
-
-		  if (e.getButton() == 3) {  
-			      popMenu.show(treeRoot, e.getX(), e.getY());  
-			        }  
-		  if(e.getButton()==1){
-			  JOptionPane.showMessageDialog(getContentPane(),"被选中", "系统信息", JOptionPane.INFORMATION_MESSAGE);
-		  }
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		@Override
+		public Object getValueAt(int arg0, int arg1) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 		
 	}
 }

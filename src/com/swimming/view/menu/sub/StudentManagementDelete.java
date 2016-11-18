@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.swimming.dao.CoachDao;
@@ -70,8 +71,8 @@ public class StudentManagementDelete extends JDialog {
 //				学号暂时不使用
 				studentDao.deleteStu(jTextField_name.getText());
 				System.out.println("222222");
-				
-				dispose();
+				JOptionPane.showMessageDialog(null,"删除成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+//             dispose();
 			}
 		});
 		

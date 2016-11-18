@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -12,9 +13,22 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import org.omg.CORBA.PRIVATE_MEMBER;
+
+import com.swimming.dao.DetailOfAccountDao;
+import com.swimming.dao.Impl.DetailOfAccountDaoImpl;
+import com.swimming.model.DetailsOfAccount;
 
 public class Details extends JDialog {
 
+	
+	private JTable table;
+	private DefaultTableModel model;
+	private DetailOfAccountDao detailOfAccountDao;
+	
+	
 	JLabel jLabel = new JLabel("选择学员：");
 	JComboBox jComboBox = new JComboBox();
 	JButton jButton = new JButton("查看");
@@ -27,9 +41,9 @@ public class Details extends JDialog {
         jComboBox.addItem("李四");	
         jComboBox.addItem("王麻子");
     
-        container.add(jLabel);
-        container.add(jComboBox);
-		container.add(jButton);
+        //container.add(jLabel);
+        //container.add(jComboBox);
+		//container.add(jButton);
 		container.add(getJpanelThird2());
 		
 		
@@ -47,43 +61,36 @@ public class Details extends JDialog {
 	
 		
 		/*
-		 * 定义表格的列名数组
+		 * 从数据库表中读取明细
+		 * 11/6 18:48
 		 */
+		detailOfAccountDao = new DetailOfAccountDaoImpl();
+		List<DetailsOfAccount> list_details = detailOfAccountDao.DetailsAccountInfoAll();
 		
-		String [] columnNames= {" 姓 名 ","时      间","明细","剩余金额"};
+		int size = list_details.size();
+		String [] columnNames= {" 姓 名 ","时      间","明细","剩余(钱/次数)"};
+		Object [][] tableValues =new Object[size][4];
 		
-//		定义表格数据数组
-		String [][] tableValues =new String[40][4];
 		
-		for (int i = 0; i < 39; i++) {
-			for (int j = 0; j <1; j++) {
-				tableValues[i][0]="张三";
-				tableValues[i][1]="2016-8-21 18:21";
-				if(i%5==4)
-				tableValues[i][2]="+340.00";
-				else if (i%5==1) {
-					tableValues[i][2]="+640.00";
-				}
-				else{
-				tableValues[i][2]="-40.00";
-				}
-				
-				tableValues[i][3] ="---";
-			}
+		for (int i = 0; i < size; i++) {
+		
+			tableValues[i][0]=list_details.get(i).getstu_name();
+			tableValues[i][1]=list_details.get(i).getAccount_operation_date();
+			tableValues[i][2]=list_details.get(i).getDetails();
+			tableValues[i][3]=list_details.get(i).getMoney();
+			
 		}
 		
-//		把列名和数据加入
-		JTable table = new JTable(tableValues,columnNames);
+		model = model = new DefaultTableModel(tableValues, columnNames);
+		table = new JTable(model);
 		
 		int columncount = table.getColumnCount();
 		
 		
 //          设置表格宽度
-		        for (int i = 0; i < columncount; i++) {
+		          table.getColumnModel().getColumn(1).setPreferredWidth(80);
 
-		          table.getColumnModel().getColumn(i).setPreferredWidth(80);
-
-		        }
+		        
 
 		
 		//JScrollPane scrollPane = new JScrollPane(table);

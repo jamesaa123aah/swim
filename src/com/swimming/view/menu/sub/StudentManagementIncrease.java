@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -42,13 +43,14 @@ public class StudentManagementIncrease extends JDialog{
 	JTextField jTextField_name = new JTextField(8);
 	
 		
-	JLabel jLabel_sex = new JLabel("性别：");
+	JLabel jLabel_sex = new JLabel("性别:");
 	JComboBox jComboBox_sex = new JComboBox();
 	
 		
-	JLabel jLabel_birth_date = new JLabel("出生日期: ");	
+	JLabel jLabel_birth_date = new JLabel("出生日期:");	
 	String array_date[] = {"1995-08-05"};
 	JComboBox jComboBox_birth_date = new JComboBox<>(array_date);
+	JTextField jTextField_birth_date = new JTextField(8);
 	
 		
 	JLabel jLabel_school = new JLabel("学校：");
@@ -92,7 +94,8 @@ public class StudentManagementIncrease extends JDialog{
 //		增加出生年月框
 		add(jLabel_adJust);
 		add(jLabel_birth_date);
-		add(jComboBox_birth_date);
+		//add(jComboBox_birth_date);
+		add(jTextField_birth_date);
 		
 //		增加学校输入框
 		add(jLabel_school);
@@ -137,9 +140,18 @@ public class StudentManagementIncrease extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				/*
+				 * 应该先判断是否重名
+				 * 不重名的话正常添加，重名的话就不允许添加
+				 */
+				
 
 //				可以根据此方法获取一个list(增加的学员信息)
 				List list_stu = getStudentInfo();
+				StudentDao studentDao=new StudentDaoImpl();
+				
+			
+			   
 				
 				Student stu=new Student();
 				//stu.setClass_name(jTextField_class.getText());
@@ -148,14 +160,28 @@ public class StudentManagementIncrease extends JDialog{
 				stu.setStu_sex((String) jComboBox_sex.getSelectedItem());
 				stu.setStu_school(jTextField_school.getText());
 				stu.setStu_phone(jTextField_phone.getText());
-				stu.setStu_birthDate((String) jComboBox_birth_date.getSelectedItem());
+				stu.setStu_birthDate(jTextField_birth_date.getText());
 				stu.setStu_remark(jTextArea_remark.getText());
 				
+				/*
+				 * 列出数据库所有学生名字
+				 */
+				List<Student> list_database = studentDao.allStudent();
+				int size = list_database.size();
+				int i ;
+				for(i = 0;i<size;i++){
+					if(jTextField_name.getText().equals(list_database.get(i).getStu_name())){
+						JOptionPane.showMessageDialog(null,"名字重复!!", "失败!!", JOptionPane.ERROR_MESSAGE);
+					   break;
+					}
+				}
 				
-				StudentDao studentDao=new StudentDaoImpl();
+				if(i==size){
 				studentDao.addStu(stu);
+				JOptionPane.showMessageDialog(null,"新增成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+				}
 				
-				dispose();
+//				dispose();
 				
 				
 			}

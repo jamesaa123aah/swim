@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -29,9 +32,9 @@ public class AttendanceDaoImpl implements AttendanceDao {
 		try {
 			stmt=conn.prepareStatement(strSQL.toString());
 			stmt.setString(1, a.getStu_name());
-			Date date = new Date();
-			String nowTime1 = new SimpleDateFormat("yyyy-MM-dd").format(date);
-			stmt.setString(2, nowTime1);
+			//Date date = new Date();
+			//String nowTime1 = new SimpleDateFormat("yyyy-MM-dd").format(date);
+			stmt.setString(2, a.getAttendance_date());
 			stmt.setInt(3, a.getForget());
 			count=stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -121,4 +124,58 @@ public class AttendanceDaoImpl implements AttendanceDao {
 		return list;
 	}
 
+	
+	public List nameSortList() {
+		List<Attendance>list1=Attendance();
+		int m=0;
+		String[] names=new String[list1.size()];
+ 		for (Attendance attendance : list1) {
+			names[m]=attendance.getStu_name();
+			m=m+1;
+		}
+ 		Comparator<Object> cmp2 = Collator.getInstance(java.util.Locale.CHINA);  
+		Arrays.sort(names,cmp2);
+//		for (String string : names) {
+//			System.out.println(string.toString());
+//		}
+		//一个新的list，里面是排序好的list
+		List<Attendance> namelist=new ArrayList<Attendance>();
+		for (int j = 0; j < list1.size(); j++) {
+			for (Attendance a1 : list1) {
+				if (names[j].equals(a1.getStu_name())&&!namelist.contains(a1)) {
+					namelist.add(a1);
+				}
+			}
+		}
+ 		
+		return namelist;
+	}
+
+	@Override
+	public List DateSortList() {
+		List<Attendance> list1=Attendance();
+		int i=0;
+		String[] dates=new String [list1.size()];
+		for (Attendance attendance : list1) {
+			dates[i]=attendance.getAttendance_date();
+			i=i+1;
+		}
+		Comparator<Object> cmp1 = Collator.getInstance(java.util.Locale.CHINA).reversed();
+		
+		Arrays.sort(dates,cmp1);
+		for (String string : dates) {
+			System.out.println(string.toString());
+		}
+		List<Attendance> datelist=new ArrayList<Attendance>();
+		for (int j = 0; j < list1.size(); j++) {
+			for (Attendance a1 : list1) {
+				if (dates[j].equals(a1.getAttendance_date())&&!datelist.contains(a1)) {
+					datelist.add(a1);
+					
+				}
+			}
+		}
+		
+		return datelist;
+	}
 }
