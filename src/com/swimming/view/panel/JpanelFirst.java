@@ -60,7 +60,9 @@ public class JpanelFirst {
 	static JComboBox jComboBox_onekey = new JComboBox();
 
 //  当前时间的Label	 
-	static JLabel jLabel3 = new JLabel("当前时间:");
+	static JLabel jLabel_date_title = new JLabel("考勤时间:");
+	static JLabel jLabel_date_year = new JLabel(""+"年");
+	static JLabel jLabel_date_month = new JLabel(""+"月");
 	static NowTime nowTime = new NowTime();
 	static JTextField jTextField_now_time =  nowTime.get_time();
 	 
@@ -192,9 +194,25 @@ public static JPanel getJPanel() {
 	jPanel.add(jButton_onekey);
 	jPanel.add(jButton_statistic);
 	
+	jPanel.add(new JLabel("             "));
+	jPanel.add(jLabel_date_title);
+	jPanel.add(jLabel_date_year);
+	jPanel.add(jLabel_date_month);
 
-
-	
+	/*
+	 * 默认当前时间
+	 */
+	jLabel_date_year.setText(year+"年");
+	jLabel_date_month.setText(month+"月");
+	/*
+	 * 设置考勤日期的字体
+	 */
+	jLabel_date_title.setFont(new   java.awt.Font("Dialog",   1,   26));	
+	jLabel_date_title.setForeground(Color.red);
+	jLabel_date_year.setFont(new   java.awt.Font("Dialog",   1,   26));	
+	jLabel_date_year.setForeground(Color.red);
+	jLabel_date_month.setFont(new   java.awt.Font("Dialog",   1,   26));	
+	jLabel_date_month.setForeground(Color.red);
 	
 //面板中加入当前时间
 //	jPanel.add(new JLabel("                 "));
@@ -221,8 +239,21 @@ public static JPanel getJPanel() {
 			// TODO Auto-generated method stub
 			year = String.valueOf(jComboBox2.getSelectedItem()).substring(0, 4);
 			month=String.valueOf(jComboBox3.getSelectedItem());
+			if (month.length()==1) {
+				month = "0"+month;
+			}
+			System.out.println(month.length());
 				
+			/*
+			 * 设置用户选择的时间
+			 */
+			jLabel_date_year.setText(year+"年");
+			jLabel_date_month.setText(month+"月");
+			
+			JPanleThird.queryClass(JPanelSecond.select_classname);
 		}
+		
+		
 	});
 	
 	jButton_onekey.addActionListener(new ActionListener() {

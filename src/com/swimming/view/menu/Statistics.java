@@ -189,6 +189,7 @@ public class Statistics extends JDialog {
 					String year0,month0,day0;
 					year0 = date.substring(0, 4);
 					month0=date.substring(5,7);
+					
 					day0=date.substring(8,10);
 					//System.out.println(day0);
 
@@ -197,29 +198,80 @@ public class Statistics extends JDialog {
 					 * （2）年相等、月不相等、直接比月份
 					 * （3）年月相等、比日
 					 */
+					
+					/*
+					 * 月份
+					 * 日0的
+					 * 砍去
+					 * 
+					 */
+					if (month0.substring(0, 1).equals("0")) {
+						month0=month0.substring(1,2);
+					}
+					if (month1.substring(0, 1).equals("0")) {
+						month1=month1.substring(1,2);
+					}
+					if (month2.substring(0, 1).equals("0")) {
+						month2=month2.substring(1,2);
+					}
+					if (day0.substring(0, 1).equals("0")) {
+						day0=day0.substring(1,2);
+					}
+					if (day1.substring(0, 1).equals("0")) {
+						day1=day1.substring(1,2);
+					}
+					if (day2.substring(0, 1).equals("0")) {
+						day2=day2.substring(1,2);
+					}
 //					情况（1）
 					if(Integer.parseInt(year1)!=Integer.parseInt(year2)){
 						if (Integer.parseInt(year1)<=Integer.parseInt(year0) && Integer.parseInt(year0)<=Integer.parseInt(year2)){
-							num++;
+						
+					
 						}
 					}
 //					情况（2）
 					if(Integer.parseInt(year1)==Integer.parseInt(year2)){
+						if (Integer.parseInt(year0)==Integer.parseInt(year1)||Integer.parseInt(year0)==Integer.parseInt(year2)) {
+							
+						
 						if(Integer.parseInt(month1)!=Integer.parseInt(month2)){
-							if(Integer.parseInt(month1)<=Integer.parseInt(month0) && Integer.parseInt(month0)<=Integer.parseInt(month2)){
-								num++;
+							if(Integer.parseInt(month1)<=Integer.parseInt(month0) && Integer.parseInt(month0)<=Integer.parseInt(month2)){				
+								if(Integer.parseInt(month1)==Integer.parseInt(month0)){
+									if(Integer.parseInt(day0)>Integer.parseInt(day1)){
+										num++;
+										System.out.println("aaaa");
+									}
+									
+								}else if (Integer.parseInt(month2)==Integer.parseInt(month0)) {
+									if(Integer.parseInt(day0)<Integer.parseInt(day2)){
+										num++;
+										System.out.println("bbb");
+									}
+								}else if (Integer.parseInt(month0)>Integer.parseInt(month1)&&Integer.parseInt(month0)<Integer.parseInt(month2)) {
+									num++;
+									System.out.println("month0:"+month0);
+									System.out.println("month2:"+month2);
+									System.out.println("ccc");
+								}
+								
 								System.out.println(year0+month0+day0);
 							}
-						}
+						}}
 					}
 					
 //					情况（3）
 					if(Integer.parseInt(year1)==Integer.parseInt(year2)){
 						if(Integer.parseInt(month1)==Integer.parseInt(month2)){
-							if(Integer.parseInt(day1)<=Integer.parseInt(day0) && Integer.parseInt(day0)<=Integer.parseInt(day2)){
-								num++;
-								System.out.println(year0+month0+day0);
+							if(Integer.parseInt(month0)==Integer.parseInt(month2)||Integer.parseInt(month0)==Integer.parseInt(month1)){
+								if(Integer.parseInt(day1)<=Integer.parseInt(day0) && Integer.parseInt(day0)<=Integer.parseInt(day2)){
+									num++;
+									System.out.println("month1:"+month1);
+									System.out.println("month0:"+month0);
+									System.out.println("month2:"+month2);
+								}
 							}
+							
 						}
 					}
 					

@@ -15,6 +15,8 @@ import com.swimming.dao.CoachDao;
 import com.swimming.dao.StudentDao;
 import com.swimming.dao.Impl.CoachDaoImpl;
 import com.swimming.dao.Impl.StudentDaoImpl;
+import com.swimming.view.panel.JPanelSecond;
+import com.swimming.view.panel.JPanleThird;
 
 public class StudentManagementDelete extends JDialog {
 
@@ -34,6 +36,15 @@ public class StudentManagementDelete extends JDialog {
 	
 	public StudentManagementDelete() {
 		// TODO Auto-generated constructor stub
+		
+		
+		/*
+		 * 11/18
+		 * 选中学员
+		 * 进行修改学员信息
+		 */
+		if(JPanleThird.table.getSelectedRow()>=0)
+		jTextField_name.setText((String) JPanleThird.my.getValueAt(JPanleThird.table.getSelectedRow(), 0));
 		
 //		姓名
 		jLabel_name.setSize(40, 25);
@@ -72,7 +83,8 @@ public class StudentManagementDelete extends JDialog {
 				studentDao.deleteStu(jTextField_name.getText());
 				System.out.println("222222");
 				JOptionPane.showMessageDialog(null,"删除成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
-//             dispose();
+				JPanleThird.queryClass(JPanelSecond.select_classname);
+				dispose();
 			}
 		});
 		

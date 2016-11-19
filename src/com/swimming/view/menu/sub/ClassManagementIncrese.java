@@ -124,7 +124,7 @@ public class ClassManagementIncrese extends JDialog {
 				CourseDao courseDao = new CourseDaoImpl();
 				courseDao.addClass(course);
 				JOptionPane.showMessageDialog(null,"新增成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
-//				dispose();
+				dispose();
 			}
 		});
 	

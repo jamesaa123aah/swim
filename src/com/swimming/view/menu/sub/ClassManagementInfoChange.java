@@ -208,7 +208,7 @@ public class ClassManagementInfoChange extends JDialog {
 				course.setCoach_name(jTextField_coachName.getText());
 				courseDao.updateClass(course, (String) jComboBox_className1.getSelectedItem());
 				JOptionPane.showMessageDialog(null,"修改成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
-//				dispose();
+				dispose();
 			}
 		});
 		

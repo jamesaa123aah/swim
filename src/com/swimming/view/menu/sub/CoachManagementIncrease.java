@@ -124,7 +124,7 @@ public class CoachManagementIncrease extends JDialog {
 				CoachDao coachDao = new CoachDaoImpl();
 				coachDao.addCoach(coach);
 				JOptionPane.showMessageDialog(null,"新增成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
-				//dispose();
+				dispose();
 			}
 		});
 		

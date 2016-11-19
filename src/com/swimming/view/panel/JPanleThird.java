@@ -51,9 +51,7 @@ public class JPanleThird  implements TableModelListener{
 	    	PaymentDao paymentDao = new PaymentDaoImpl();
 	    	List<Payment> listPayments;
 	    	
-		 for (Student student : slist) {
-			System.out.println(student.getStu_name());
-		}
+
 		 int rownumber=defaultTableModel.getRowCount();
 		 for(int k=rownumber;k>=0;k--){
 			 if(k==0)
@@ -141,20 +139,35 @@ public class JPanleThird  implements TableModelListener{
 				
 				String year = list_date.get(0);
 				String month = list_date.get(1);
+				if (month.length()==1) {
+					month="0"+month;
+				}
 				int day = Integer.parseInt(list_date.get(2));
 				
-				//检索整个Jtable,判断此时表中的学生是否有考勤信息,number 所有学员
-				for (int k = 0; k < slist.size(); k++) {
-					
-					if(defaultTableModel.getValueAt(k, 0).equals(name)){
-						//data[k][day+3]=list.get(i).getForget();
-//						机器set ,所有tag = true;
+				/*
+				 * 判断是否是选中的年
+				 */
+				if(year.equals(JpanelFirst.year)){
+				/*
+				 * 判断是否是
+				 * 选中的考勤月份
+				 */
+				if (month.equals(JpanelFirst.month)) {
+					//检索整个Jtable,判断此时表中的学生是否有考勤信息,number 所有学员
+					for (int k = 0; k < slist.size(); k++) {
 						
-						defaultTableModel.setValueAt(list.get(i).getForget(), k, day+3);
-					
-					
+						if(defaultTableModel.getValueAt(k, 0).equals(name)){
+							//data[k][day+3]=list.get(i).getForget();
+//							机器set ,所有tag = true;
+							
+							defaultTableModel.setValueAt(list.get(i).getForget(), k, day+3);
+						
+						
+						}
 					}
 				}
+				}
+		
 				
 			}
 	
@@ -279,14 +292,24 @@ public class JPanleThird  implements TableModelListener{
 		}
 	
 	  	
-	    /*
-	     * 第一次余额不足不能一键考勤
-	     */
 	   
-	    
-	    if(column!=2&&column!=3&&my.getValueAt(row, 3).equals(0)){
-	    	
-	    	JOptionPane.showMessageDialog(null,"余额不足(不能一健考勤)，请修改学员钱", "警告", JOptionPane.INFORMATION_MESSAGE);	
+	   
+		if(column==1 && my.getValueAt(row, 3).equals(0)){
+			/*
+			 *  第一次余额不足不能一键考勤
+			 *  只能普通考勤
+			 */
+			if(my.getValueAt(row, 1).equals(true)){
+				JOptionPane.showMessageDialog(null,"余额不足，不能一健考勤,请取消！", "警告", JOptionPane.INFORMATION_MESSAGE);	
+
+			}
+			
+		}else if(column!=1&&column!=2&&column!=3&&my.getValueAt(row, 3).equals(0)){
+	    	/*
+	    	 * 第二次以后余额不足
+	    	 * 可以正常考勤
+	    	 */
+	    	JOptionPane.showMessageDialog(null,"余额不足，请务必修改学员信息！", "警告", JOptionPane.INFORMATION_MESSAGE);	
 	    	
 	    	if(column>3){
 	    	//my.setValueAt(-1, row, 3);
@@ -308,7 +331,7 @@ public class JPanleThird  implements TableModelListener{
  * 加入考勤表
  */
 	    if(column>3&&tem.equals("0")){
-	    	System.out.println("0000");	 
+	    //	System.out.println("0000");	 
 	    	attendance.setStu_name((String) my.getValueAt(row, 0));
 	    	attendance.setForget(0);
 	    	String year = JpanelFirst.year;
@@ -403,7 +426,7 @@ public class JPanleThird  implements TableModelListener{
 			    if(column>3&&!tem.equals("")){
 			    	JOptionPane.showMessageDialog(null,"只能输入0和1", "操作不合法", JOptionPane.INFORMATION_MESSAGE);	
 			    	my.setValueAt("", row, column);
-			    	System.out.println("tttt");
+			    	//System.out.println("tttt");
 			    }
 			  				
 				}
@@ -445,7 +468,7 @@ public class JPanleThird  implements TableModelListener{
  * 加入考勤表
  */
 	    if(column>3&&tem.equals("0")){
-	    	System.out.println("0000");	 
+	    	//System.out.println("0000");	 
 	    	attendance.setStu_name((String) my.getValueAt(row, 0));
 	    	attendance.setForget(0);
 	    	String year = JpanelFirst.year;
@@ -541,7 +564,7 @@ public class JPanleThird  implements TableModelListener{
 			    if(column>3&&!tem.equals("")){
 			    	JOptionPane.showMessageDialog(null,"只能输入0和1", "操作不合法", JOptionPane.ERROR_MESSAGE);	
 			    	my.setValueAt("", row, column);
-			    	System.out.println("tttt");
+			    //	System.out.println("tttt");
 			    }
 			  				
 				}
@@ -557,104 +580,104 @@ public class JPanleThird  implements TableModelListener{
 	
 		
 		
-		 static String[] columnNames =
-			{ "姓名","一健考勤","漏打卡","剩余","1","2","3","4","5",
-					"6","7","8","9","10","11","12","13","14","15","16","17",
-					"18","19","20","21","22","23","24","25","26","27","28","29",
-					"30","31"};
-		 static Object[][] data=null; 
-		
-	    public MyTableModel() {
-			// TODO Auto-generated constructor stub
-	    	
-//	    	从数据库获取所有学生
-	    	StudentDao studentDao = new StudentDaoImpl();
-			List<Student> listAll ;
-	    	listAll=studentDao.nameList();
-	    	int number = listAll.size();
-	    	
-//	    	从数据库读取学生剩余次数
-	    	PaymentDao paymentDao = new PaymentDaoImpl();
-	    	List<Payment> listPayments;
-  	
-	    	 data = new Object[number][35];
-	    	System.out.println(data.length);
-	    	for (int i = 0; i < number; i++) {
-				
-	    		for (int j = 0; j < 35; j++) {
-					
-	    			switch (j) {
-					case 0:
-						data[i][j] = listAll.get(i).getStu_name();
-						break;
-					case 1:
-						data[i][j] = new Boolean(false);
-						break;
-					case 2:
-						data[i][j] = new Boolean(false);
-						break;
-					case 3:
-						String tem_name = listAll.get(i).getStu_name();
-						listPayments=paymentDao.MoneyandTime(tem_name);
-						data[i][j] = listPayments.get(0).getTimes();						
-						break;  
-					default:
-						data[i][j]="";
-						break;
-					}
-				}
-			}
-	    
-	    	
-	    	
-
-	    	
-	    	/*
-	    	 * 解析attendance
-	    	 * 按照年月日放入考勤的Jtable
-	    	 * 1、判断界面现在选中的月份和年份
-	    	 * 2、从attendance表中读取选中月和年的所有考勤信息（解析数据表中的考勤日期）
-	    	 * 3、将得到的数据放入表中
-	    	 * 4、注意界面显示正常考勤的话是0，漏打卡的话是1，默认没有考勤是空
-	    	 * 11/4
-	    	 * jamesLee（目前只是当前月份的测试BUGBUGBUG!!!!!!!!）
-	    	 */
-//	    	从数据库Attendance表获取考勤数据
-	    	AttendanceDao attendanceDao = new AttendanceDaoImpl();
-	    	List<Attendance> list = new LinkedList<Attendance>();
-	    	list = attendanceDao.Attendance();
-	    	int number2 = list.size();
-	    	
-	    	//这个月份所有考勤信息的条数,一条一条放入Jtable
-	    	for (int i = 0; i < number2; i++) {
-				
-	    		String name = list.get(i).getStu_name();
-				String date = list.get(i).getAttendance_date();
-				
-				/*
-				 * 日期解析
-				 */
-				List<String> list_date= new ArrayList<>();
-				list_date.add(date.substring(0, 4));
-				list_date.add(date.substring(5, 7));
-				list_date.add(date.substring(8, 10));
-				
-				String year = list_date.get(0);
-				String month = list_date.get(1);
-				int day = Integer.parseInt(list_date.get(2));
-				
-				//检索整个Jtable,判断此时表中的学生是否有考勤信息,number 所有学员
-				for (int k = 0; k < number; k++) {
-					
-					if(data[k][0].equals(name)){
-						data[k][day+3]=list.get(i).getForget();
-						
-					}
-				}
-				
-			}
-	    	
-		}
+//		 static String[] columnNames =
+//			{ "姓名","一健考勤","漏打卡","剩余","1","2","3","4","5",
+//					"6","7","8","9","10","11","12","13","14","15","16","17",
+//					"18","19","20","21","22","23","24","25","26","27","28","29",
+//					"30","31"};
+//		 static Object[][] data=null; 
+//		
+//	    public MyTableModel() {
+//			// TODO Auto-generated constructor stub
+//	    	
+////	    	从数据库获取所有学生
+//	    	StudentDao studentDao = new StudentDaoImpl();
+//			List<Student> listAll ;
+//	    	listAll=studentDao.nameList();
+//	    	int number = listAll.size();
+//	    	
+////	    	从数据库读取学生剩余次数
+//	    	PaymentDao paymentDao = new PaymentDaoImpl();
+//	    	List<Payment> listPayments;
+//  	
+//	    	 data = new Object[number][35];
+//	    //	System.out.println(data.length);
+//	    	for (int i = 0; i < number; i++) {
+//				
+//	    		for (int j = 0; j < 35; j++) {
+//					
+//	    			switch (j) {
+//					case 0:
+//						data[i][j] = listAll.get(i).getStu_name();
+//						break;
+//					case 1:
+//						data[i][j] = new Boolean(false);
+//						break;
+//					case 2:
+//						data[i][j] = new Boolean(false);
+//						break;
+//					case 3:
+//						String tem_name = listAll.get(i).getStu_name();
+//						listPayments=paymentDao.MoneyandTime(tem_name);
+//					//	data[i][j] = listPayments.get(0).getTimes();						
+//						break;  
+//					default:
+//						data[i][j]="";
+//						break;
+//					}
+//				}
+//			}
+//	    
+//	    	
+//	    	
+//
+//	    	
+//	    	/*
+//	    	 * 解析attendance
+//	    	 * 按照年月日放入考勤的Jtable
+//	    	 * 1、判断界面现在选中的月份和年份
+//	    	 * 2、从attendance表中读取选中月和年的所有考勤信息（解析数据表中的考勤日期）
+//	    	 * 3、将得到的数据放入表中
+//	    	 * 4、注意界面显示正常考勤的话是0，漏打卡的话是1，默认没有考勤是空
+//	    	 * 11/4
+//	    	 * jamesLee（目前只是当前月份的测试BUGBUGBUG!!!!!!!!）
+//	    	 */
+////	    	从数据库Attendance表获取考勤数据
+//	    	AttendanceDao attendanceDao = new AttendanceDaoImpl();
+//	    	List<Attendance> list = new LinkedList<Attendance>();
+//	    	list = attendanceDao.Attendance();
+//	    	int number2 = list.size();
+//	    	
+//	    	//这个月份所有考勤信息的条数,一条一条放入Jtable
+//	    	for (int i = 0; i < number2; i++) {
+//				
+//	    		String name = list.get(i).getStu_name();
+//				String date = list.get(i).getAttendance_date();
+//				
+//				/*
+//				 * 日期解析
+//				 */
+//				List<String> list_date= new ArrayList<>();
+//				list_date.add(date.substring(0, 4));
+//				list_date.add(date.substring(5, 7));
+//				list_date.add(date.substring(8, 10));
+//				
+//				String year = list_date.get(0);
+//				String month = list_date.get(1);
+//				int day = Integer.parseInt(list_date.get(2));
+//				
+//				//检索整个Jtable,判断此时表中的学生是否有考勤信息,number 所有学员
+//				for (int k = 0; k < number; k++) {
+//					
+//					if(data[k][0].equals(name)){
+//						data[k][day+3]=list.get(i).getForget();
+//						
+//					}
+//				}
+//				
+//			}
+//	    	
+//		}
 		
 	    public Class getColumnClass(int c) {
 	        return getValueAt(0, c).getClass();

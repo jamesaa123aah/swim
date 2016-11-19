@@ -30,6 +30,7 @@ import com.swimming.model.Attendance;
 import com.swimming.model.DetailsOfAccount;
 import com.swimming.model.Payment;
 import com.swimming.model.Student;
+import com.swimming.view.panel.JPanelSecond;
 import com.swimming.view.panel.JPanleThird;
 import com.swimming.view.panel.JpanelFirst;
 
@@ -205,7 +206,8 @@ public class OneKeyAttendance extends JDialog  implements TableModelListener{
                  
                  }
              	 JOptionPane.showMessageDialog(null,"一健考勤成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
-                 dispose();		
+             	 JPanleThird.queryClass(JPanelSecond.select_classname);
+             	 dispose();		
 			}
 						
 		});

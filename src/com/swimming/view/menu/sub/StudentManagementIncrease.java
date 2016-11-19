@@ -26,6 +26,8 @@ import com.swimming.dao.Impl.StudentDaoImpl;
 import com.swimming.model.Course;
 import com.swimming.model.Student;
 import com.swimming.view.mian_login_register.UiMain;
+import com.swimming.view.panel.JPanelSecond;
+import com.swimming.view.panel.JPanleThird;
 
 public class StudentManagementIncrease extends JDialog{
 
@@ -179,6 +181,8 @@ public class StudentManagementIncrease extends JDialog{
 				if(i==size){
 				studentDao.addStu(stu);
 				JOptionPane.showMessageDialog(null,"新增成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+				JPanleThird.queryClass(JPanelSecond.select_classname);
+				dispose();
 				}
 				
 //				dispose();

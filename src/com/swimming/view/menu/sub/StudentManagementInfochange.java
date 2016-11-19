@@ -385,6 +385,7 @@ public class StudentManagementInfochange extends JDialog{
 				
 				
 			    JOptionPane.showMessageDialog(null,"修改成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+			    dispose();
 			}
 		});
 		

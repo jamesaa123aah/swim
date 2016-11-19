@@ -20,6 +20,7 @@ import com.swimming.dao.Impl.DetailOfAccountDaoImpl;
 import com.swimming.dao.Impl.PaymentDaoImpl;
 import com.swimming.model.DetailsOfAccount;
 import com.swimming.model.Payment;
+import com.swimming.view.panel.JPanelSecond;
 import com.swimming.view.panel.JPanleThird;
 
 public class MoneyManagement extends JDialog{
@@ -179,8 +180,11 @@ public class MoneyManagement extends JDialog{
 				detailOfAccountDao.DetailsAccount(detailsOfAccount);
 				JOptionPane.showMessageDialog(null,"缴费成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
 				
+				JPanleThird.queryClass(JPanelSecond.select_classname);
 				dispose();
+				
 			}
+			
 		});
 		
 		setDefaultCloseOperation(2);

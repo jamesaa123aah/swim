@@ -41,6 +41,8 @@ public class JPanelSecond  extends JFrame {
 	JPopupMenu popMenu;  
 	JMenuItem addItem; 
 	
+	public static String select_classname = null;
+	
 	 public JPanelSecond() {
 		// TODO Auto-generated constructor stub
 		// TODO Auto-generated constructor stub
@@ -82,6 +84,11 @@ public class JPanelSecond  extends JFrame {
 				    String name = note.toString();//获得这个结点的名称
 				    JPanleThird.queryClass(name);
 					
+				    
+				    /*
+				     * 获取选中的班级
+				     */
+				    select_classname=name;
 				}
 			});
 	    	
