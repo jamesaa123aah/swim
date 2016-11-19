@@ -297,4 +297,65 @@ public class StudentDaoImpl implements StudentDao {
  		
 		return namelist;
 	}
+
+	@Override
+	public List StudentList(String coursename) {
+		// TODO Auto-generated method stub
+		StringBuffer strSQL=new StringBuffer();
+		strSQL.append("select stu_name from student where stu_tab=1 and class_name=?");
+		Connection conn =JDBCUtil.getConnection();
+		PreparedStatement stmt=null;
+		ResultSet rs=null;
+		List<Student> list=null;
+		
+		try {
+			
+			stmt=conn.prepareStatement(strSQL.toString());
+			stmt.setString(1, coursename);
+			rs=stmt.executeQuery();
+			Student stu=null;
+			list=new ArrayList<Student>();
+			
+			while(rs.next()){
+				stu=new Student();
+				stu.setStu_name(rs.getString(1));
+				//stu.setStu_number(Integer.parseInt(rs.getString(2)));
+				
+				list.add(stu);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
+	@Override
+	public List coursenameList(String class_name) {
+		// TODO Auto-generated method stub
+		List<Student>list1=StudentList(class_name);
+		int m=0;
+		String[] names=new String[list1.size()];
+ 		for (Student student : list1) {
+			names[m]=student.getStu_name();
+			m=m+1;
+		}
+ 		Comparator<Object> cmp2 = Collator.getInstance(java.util.Locale.CHINA);  
+		Arrays.sort(names,cmp2);
+//		for (String string : names) {
+//			System.out.println(string.toString());
+//		}
+		//一个新的list，里面是排序好的list
+		List<Student> namelist=new ArrayList<Student>();
+		for (int j = 0; j < list1.size(); j++) {
+			for (Student a1 : list1) {
+				if (names[j].equals(a1.getStu_name())&&!namelist.contains(a1)) {
+					namelist.add(a1);
+				}
+			}
+		}
+ 		
+		return namelist;
+	}
 }

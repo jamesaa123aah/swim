@@ -13,4 +13,6 @@ public interface StudentDao {
 	public List allStudent(); 
 	public List mistStudent(String strName);
 	public List nameList();
+	public List StudentList(String coursename);
+	public List coursenameList(String class_name);//每个班级的姓名排序
 }

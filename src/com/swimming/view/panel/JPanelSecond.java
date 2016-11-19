@@ -78,6 +78,10 @@ public class JPanelSecond  extends JFrame {
 				    //JPanleThird.my.data=new Object[2][40];
 				    //JPanleThird.my.setValueAt("1", 4, 12);
 				    //JPanleThird.my.remove(4, 1);
+					DefaultMutableTreeNode note = (DefaultMutableTreeNode) treeRoot.getLastSelectedPathComponent();
+				    String name = note.toString();//获得这个结点的名称
+				    JPanleThird.queryClass(name);
+					
 				}
 			});
 	    	

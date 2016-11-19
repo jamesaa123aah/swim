@@ -20,6 +20,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.text.html.HTML.Tag;
 
 import com.swimming.dao.AttendanceDao;
 import com.swimming.dao.DetailOfAccountDao;
@@ -36,19 +37,157 @@ import com.swimming.model.Student;
 
 public class JPanleThird  implements TableModelListener{
 
+	public static Boolean tag=false;
+	/*
+	 * 查询相对应班级的学生
+	 */
+	public static void queryClass(String Classname){
+		tag=true;
+//		数据库中读取学生名字
+		 StudentDao studentdao=new StudentDaoImpl();
+		 List<Student> slist=studentdao.coursenameList(Classname);
+		 
+//	    	从数据库读取学生剩余次数
+	    	PaymentDao paymentDao = new PaymentDaoImpl();
+	    	List<Payment> listPayments;
+	    	
+		 for (Student student : slist) {
+			System.out.println(student.getStu_name());
+		}
+		 int rownumber=defaultTableModel.getRowCount();
+		 for(int k=rownumber;k>=0;k--){
+			 if(k==0)
+				 break;
+			 else
+				 defaultTableModel.removeRow(k-1);
+		 }
+		 
+		 for(int i=0;i<slist.size();i++){
+			 
+			 Object[] data = new Object[35];
+			 data[0]=slist.get(i).getStu_name();
+			 for(int j = 0;j<35;j++){
+				 data[j]=" ";
+			 }
+			 defaultTableModel.addRow(data);
+		 }
+		 
+		 for (int i = 0; i < slist.size(); i++) {
+				
+	    		for (int j = 0; j < 35; j++) {
+					
+	    			switch (j) {
+					case 0:
+						defaultTableModel.setValueAt(slist.get(i).getStu_name(), i, j);
+						break;
+					case 1:
+						defaultTableModel.setValueAt(false, i, j);
+						break;
+					case 2:
+						defaultTableModel.setValueAt(false,i, j);
+						break;
+					case 3:
+						String tem_name = slist.get(i).getStu_name();
+						listPayments=paymentDao.MoneyandTime(tem_name);
+						/*
+						 * 由于0
+						 * 会触发欠费事件
+						 * 
+						 */
+//						if (listPayments.get(0).getTimes()==0) {
+//							defaultTableModel.setValueAt(-1, i, j);
+//						}else {
+							defaultTableModel.setValueAt(listPayments.get(0).getTimes(), i, j);
+//						}
+						
+						//data[i][j] = listPayments.get(0).getTimes();						
+						break;  
+					default:
+						defaultTableModel.setValueAt("",i, j);
+						break;
+					}
+				}
+			}
+		 
+	    	/*
+	    	 * 解析attendance
+	    	 * 按照年月日放入考勤的Jtable
+	    	 * 1、判断界面现在选中的月份和年份
+	    	 * 2、从attendance表中读取选中月和年的所有考勤信息（解析数据表中的考勤日期）
+	    	 * 3、将得到的数据放入表中
+	    	 * 4、注意界面显示正常考勤的话是0，漏打卡的话是1，默认没有考勤是空
+	    	 * 11/19
+	    	 * jamesLee（目前只是当前月份的测试BUGBUGBUG!!!!!!!!）
+	    	 */
+//	    	从数据库Attendance表获取考勤数据
+	    	AttendanceDao attendanceDao = new AttendanceDaoImpl();
+	    	List<Attendance> list = new LinkedList<Attendance>();
+	    	list = attendanceDao.Attendance();
+	    	int number2 = list.size();
+	    	
+	    	//这个月份所有考勤信息的条数,一条一条放入Jtable
+	    	for (int i = 0; i < number2; i++) {
+				
+	    		String name = list.get(i).getStu_name();
+				String date = list.get(i).getAttendance_date();
+				
+				/*
+				 * 日期解析
+				 */
+				List<String> list_date= new ArrayList<>();
+				list_date.add(date.substring(0, 4));
+				list_date.add(date.substring(5, 7));
+				list_date.add(date.substring(8, 10));
+				
+				String year = list_date.get(0);
+				String month = list_date.get(1);
+				int day = Integer.parseInt(list_date.get(2));
+				
+				//检索整个Jtable,判断此时表中的学生是否有考勤信息,number 所有学员
+				for (int k = 0; k < slist.size(); k++) {
+					
+					if(defaultTableModel.getValueAt(k, 0).equals(name)){
+						//data[k][day+3]=list.get(i).getForget();
+//						机器set ,所有tag = true;
+						
+						defaultTableModel.setValueAt(list.get(i).getForget(), k, day+3);
+					
+					
+					}
+				}
+				
+			}
+	
+//	    	机器操作完毕
+	tag=false;
+	}
+	
 //	 my is abstract tablemodel
 	 public  static  MyTableModel my =null; 
 	 public static JTable table =null;
 	 private static JPanleThird jPanelThird = null;
 	 public static JPanel jPanel = null;
-
+	 public static DefaultTableModel defaultTableModel=null;
+	 
 	// public static String[] columnNames;
 	// public static Object[][] data;
 //	 单实例设计模式
 	 private JPanleThird(){
 		 my = new MyTableModel();
 		 table = new JTable(my);
-	
+		 defaultTableModel =(DefaultTableModel) table.getModel();
+		 
+		 String[] columnNames =
+				{ "姓名","一健考勤","漏打卡","剩余","1","2","3","4","5",
+				"6","7","8","9","10","11","12","13","14","15","16","17",
+				"18","19","20","21","22","23","24","25","26","27","28","29",
+				"30","31"};
+		 
+		 for(int i =0;i<columnNames.length;i++){
+	    		defaultTableModel.addColumn(columnNames[i]);
+	    }
+		 
+		 
 	 }
 		 
 	 public static JPanel getInstance() {
@@ -86,7 +225,7 @@ public class JPanleThird  implements TableModelListener{
 	public void tableChanged(TableModelEvent e) {
 		// TODO Auto-generated method stub
 
-	
+		if(tag==false){
 		
 			
 		/*
@@ -109,11 +248,15 @@ public class JPanleThird  implements TableModelListener{
 		
 		int row = e.getFirstRow();
 	    int column = e.getColumn();
+	
+	    
+	    if(row>=0 && column>=0){
+		int n;
+		
 		/*
 		 * 判断是否清楚漏打卡
 		 * 11/8
 		 */
-		int n;
 		if(column!=3){
 			String name =(String) my.getValueAt(row,0);
 			List<Attendance> list_clear=attendanceDao.forgetAttendance();
@@ -141,7 +284,7 @@ public class JPanleThird  implements TableModelListener{
 	     */
 	   
 	    
-	    if(column!=2&&column!=3&&my.getValueAt(row, 3).equals(0)&&(my.getValueAt(row, 3).equals(0))){
+	    if(column!=2&&column!=3&&my.getValueAt(row, 3).equals(0)){
 	    	
 	    	JOptionPane.showMessageDialog(null,"余额不足(不能一健考勤)，请修改学员钱", "警告", JOptionPane.INFORMATION_MESSAGE);	
 	    	
@@ -317,6 +460,7 @@ public class JPanleThird  implements TableModelListener{
 	    	 * 扣费
 	    	 * 扣减次数
 	    	 */
+	    
 	    	PaymentDao paymentDao = new PaymentDaoImpl();		
 	    	List<Payment> list=paymentDao.MoneyandTime((String) my.getValueAt(row, 0));
 	    	int money_time = list.get(0).getMoney()/list.get(0).getTimes();
@@ -333,7 +477,7 @@ public class JPanleThird  implements TableModelListener{
 	    	 * 相应减一
 	    	 */
 	    	my.setValueAt(Integer.parseInt(String.valueOf(my.getValueAt(row, 3)))-1, row, 3);
-	   
+	    	//my.setValueAt(String.valueOf(Integer.parseInt(String.valueOf(my.getValueAt(row, 3)))-1), row, 3);
 	    	/*
 	    	 * 导入明细表
 	    	 * 2016/11/8
@@ -402,9 +546,12 @@ public class JPanleThird  implements TableModelListener{
 			  				
 				}
 	    }
+	    
+	}
+	}
 	}
 
-	public static class MyTableModel extends AbstractTableModel{
+	public static class MyTableModel extends DefaultTableModel{
 
 	
 	
@@ -484,11 +631,15 @@ public class JPanleThird  implements TableModelListener{
 	    		String name = list.get(i).getStu_name();
 				String date = list.get(i).getAttendance_date();
 				
+				/*
+				 * 日期解析
+				 */
 				List<String> list_date= new ArrayList<>();
 				list_date.add(date.substring(0, 4));
 				list_date.add(date.substring(5, 7));
 				list_date.add(date.substring(8, 10));
 				
+				String year = list_date.get(0);
 				String month = list_date.get(1);
 				int day = Integer.parseInt(list_date.get(2));
 				
@@ -505,85 +656,10 @@ public class JPanleThird  implements TableModelListener{
 	    	
 		}
 		
-	 // 以下为继承自AbstractTableModle的方法，可以自定义
-	 		/**
-	 		 * 得到列名
-	 		 */
-	 		@Override
-	 		public String getColumnName(int column)
-	 		{
-	 			return columnNames[column];
-	 		}
-	 		
-	 		/**
-	 		 * 重写方法，得到表格列数
-	 		 */
-	 		@Override
-	 		public int getColumnCount()
-	 		{
-	 			return columnNames.length;
-	 		}
+	    public Class getColumnClass(int c) {
+	        return getValueAt(0, c).getClass();
+	}
 
-	 		/**
-	 		 * 得到表格行数
-	 		 */
-	 		@Override
-	 		public int getRowCount()
-	 		{
-	 			return data.length;
-	 		}
-
-	 		/**
-	 		 * 得到数据所对应对象
-	 		 */
-	 		@Override
-	 		public Object getValueAt(int rowIndex, int columnIndex)
-	 		{
-	 			return data[rowIndex][columnIndex];
-	 		}
-
-	 		/**
-	 		 * 得到指定列的数据类型
-	 		 */
-	 		@Override
-	 		public Class<?> getColumnClass(int columnIndex)
-	 		{
-	 			return data[0][columnIndex].getClass();
-	 		}
-
-	 		/**
-	 		 * 指定设置数据单元是否可编辑.这里设置"姓名","学号"不可编辑
-	 		 */
-	 		@Override
-	 		public boolean isCellEditable(int rowIndex, int columnIndex)
-	 		{
-	 			if (columnIndex== 0)
-	 				return false;
-	 			else if(columnIndex == 3)
-					return false;
-	 			else if(my.getValueAt(rowIndex, 3).equals(0)){
-	 				//return false;
-	 			   return true;
-	 			}
-	 			else
-	 				return true;
-	 		}
-	 		
-	 		/**
-	 		 * 如果数据单元为可编辑，则将编辑后的值替换原来的值
-	 		 */
-	 		@Override
-	 		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
-	 		{
-	 			data[rowIndex][columnIndex] = aValue;
-	 			/*通知监听器数据单元数据已经改变*/
-	 			fireTableCellUpdated(rowIndex, columnIndex);
-	 		}
-
-	 		/*
-	 		 * remove 
-	 		 * 
-	 		 */
 	 
 		
 	}
