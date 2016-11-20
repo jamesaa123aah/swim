@@ -303,6 +303,11 @@ public class StudentDaoImpl implements StudentDao {
 		// TODO Auto-generated method stub
 		StringBuffer strSQL=new StringBuffer();
 		strSQL.append("select stu_name from student where stu_tab=1 and class_name=?");
+		
+		//查看所有学生
+		StringBuffer strSQL2=new StringBuffer();
+		strSQL2.append("select stu_name from student where stu_tab=1");
+		
 		Connection conn =JDBCUtil.getConnection();
 		PreparedStatement stmt=null;
 		ResultSet rs=null;
@@ -310,9 +315,19 @@ public class StudentDaoImpl implements StudentDao {
 		
 		try {
 			
+			if (coursename.equals("全部学员")) {
+				stmt=conn.prepareStatement(strSQL2.toString());
+			
+				rs=stmt.executeQuery();
+			}else if (!coursename.equals("全部学员")) 
+			{
 			stmt=conn.prepareStatement(strSQL.toString());
 			stmt.setString(1, coursename);
 			rs=stmt.executeQuery();
+			}
+//			stmt=conn.prepareStatement(strSQL.toString());
+//			stmt.setString(1, coursename);
+//			rs=stmt.executeQuery();
 			Student stu=null;
 			list=new ArrayList<Student>();
 			

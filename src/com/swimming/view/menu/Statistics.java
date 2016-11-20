@@ -17,8 +17,14 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.swimming.dao.AttendanceDao;
+import com.swimming.dao.CourseDao;
+import com.swimming.dao.StudentDao;
 import com.swimming.dao.Impl.AttendanceDaoImpl;
+import com.swimming.dao.Impl.CourseDaoImpl;
+import com.swimming.dao.Impl.StudentDaoImpl;
 import com.swimming.model.Attendance;
+import com.swimming.model.Course;
+import com.swimming.model.Student;
 
 public class Statistics extends JDialog {
 
@@ -42,8 +48,16 @@ public class Statistics extends JDialog {
 	JComboBox jComboBox_day2 = new JComboBox(get_day());
 	
 	
-	JLabel jLabel_people = new JLabel("学员数：");
-	JTextField jTextField_people = new JTextField("68"); 
+	JLabel jLabel_people = new JLabel("总学员数：");
+	JTextField jTextField_people = new JTextField("0"); 
+	
+	/*
+	 * 选择要统计的班级
+	 */
+	JComboBox jComboBox_class = new JComboBox<>();
+	JLabel jLabel_class_people = new JLabel("该班人数：");
+	JTextField jTextField_class_people = new JTextField("0"); 
+	
 	
 	JButton jButton_search = new JButton("查看");
 	
@@ -51,6 +65,20 @@ public class Statistics extends JDialog {
 	
 	public Statistics() {
 		// TODO Auto-generated constructor stub
+		
+		/*
+		 * 
+		 * 在选择班级时候
+		 * 从数据库提供已有的班级
+		 */
+		CourseDao courseDao = new CourseDaoImpl();
+		List<Course> list_class=courseDao.allClass();
+		
+		for (int i = 0;i<list_class.size();i++) {
+			jComboBox_class.addItem(list_class.get(i).getClass_name());
+		}
+		
+		
 		Container container = getContentPane();
 		setLayout(new GridBagLayout());	
 		
@@ -104,6 +132,27 @@ public class Statistics extends JDialog {
 		gridBagConstraints_4.insets = new Insets(10, 0, 0, 0);
 		gridBagConstraints_4.fill = GridBagConstraints.HORIZONTAL;
 		container.add(jButton_search,gridBagConstraints_4);
+		
+		GridBagConstraints gridBagConstraints_a = new GridBagConstraints();
+		gridBagConstraints_a.gridy=4;
+		gridBagConstraints_a.gridx=1;
+		gridBagConstraints_a.insets = new Insets(10, 0, 0, 0);
+		gridBagConstraints_a.fill = GridBagConstraints.HORIZONTAL;
+		container.add(jComboBox_class,gridBagConstraints_a);
+		
+		GridBagConstraints gridBagConstraints_b = new GridBagConstraints();
+		gridBagConstraints_b.gridy=4;
+		gridBagConstraints_b.gridx=2;
+		gridBagConstraints_b.insets = new Insets(10, 0, 0, 0);
+		gridBagConstraints_b.fill = GridBagConstraints.HORIZONTAL;
+		container.add(jLabel_class_people,gridBagConstraints_b);
+		
+		GridBagConstraints gridBagConstraints_c = new GridBagConstraints();
+		gridBagConstraints_c.gridy=4;
+		gridBagConstraints_c.gridx=3;
+		gridBagConstraints_c.insets = new Insets(10, 0, 0, 0);
+		gridBagConstraints_c.fill = GridBagConstraints.HORIZONTAL;
+		container.add(jTextField_class_people,gridBagConstraints_c);
 		
 		/*
 		 * 加上
@@ -172,6 +221,11 @@ public class Statistics extends JDialog {
 				// TODO Auto-generated method stub
 				String year1,year2,month1,month2,day1,day2;
 				int num=0;
+				int num2=0;
+				String class_name=(String) jComboBox_class.getSelectedItem();
+				
+				StudentDao studentDao = new StudentDaoImpl();
+				
 				
 				year1= (String) jComboBox_year.getSelectedItem();
 				year2= (String) jComboBox_year2.getSelectedItem();
@@ -185,7 +239,7 @@ public class Statistics extends JDialog {
 				for (Attendance attendance : list_statistics) {
 					String date = attendance.getAttendance_date();
 					
-					
+					String stu_name =attendance.getStu_name();
 					String year0,month0,day0;
 					year0 = date.substring(0, 4);
 					month0=date.substring(5,7);
@@ -225,9 +279,52 @@ public class Statistics extends JDialog {
 					}
 //					情况（1）
 					if(Integer.parseInt(year1)!=Integer.parseInt(year2)){
-						if (Integer.parseInt(year1)<=Integer.parseInt(year0) && Integer.parseInt(year0)<=Integer.parseInt(year2)){
-						
 					
+						if(Integer.parseInt(year1)==Integer.parseInt(year0)||Integer.parseInt(year0)==Integer.parseInt(year2)){
+
+							
+							
+							if(Integer.parseInt(month1)!=Integer.parseInt(month2)){
+								if(Integer.parseInt(month1)<=Integer.parseInt(month0) && Integer.parseInt(month0)<=Integer.parseInt(month2)){				
+									if(Integer.parseInt(month1)==Integer.parseInt(month0)){
+										if(Integer.parseInt(day0)>Integer.parseInt(day1)){
+											num++;
+											List<Student> list=studentDao.getLookStu(stu_name);
+											if (list.get(0).getClass_name().equals(class_name)) {
+												num2++;
+											}
+											System.out.println("aaaa");
+										}
+										
+									}else if (Integer.parseInt(month2)==Integer.parseInt(month0)) {
+										if(Integer.parseInt(day0)<Integer.parseInt(day2)){
+											num++;
+											List<Student> list=studentDao.getLookStu(stu_name);
+											if (list.get(0).getClass_name().equals(class_name)) {
+												num2++;
+											}
+											System.out.println("bbb");
+										}
+									}else if (Integer.parseInt(month0)>Integer.parseInt(month1)&&Integer.parseInt(month0)<Integer.parseInt(month2)) {
+										num++;
+										//System.out.println("month0:"+month0);
+										//System.out.println("month2:"+month2);
+										List<Student> list=studentDao.getLookStu(stu_name);
+										if (list.get(0).getClass_name().equals(class_name)) {
+											num2++;
+										}
+										System.out.println("ccc");
+									}
+									
+									//System.out.println(year0+month0+day0);
+								}
+							}
+							
+							
+						}
+						
+						if(Integer.parseInt(year1)<Integer.parseInt(year0)&&Integer.parseInt(year0)<Integer.parseInt(year2)){
+							num++;
 						}
 					}
 //					情况（2）
@@ -241,21 +338,33 @@ public class Statistics extends JDialog {
 									if(Integer.parseInt(day0)>Integer.parseInt(day1)){
 										num++;
 										System.out.println("aaaa");
+										List<Student> list=studentDao.getLookStu(stu_name);
+										if (list.get(0).getClass_name().equals(class_name)) {
+											num2++;
+										}
 									}
 									
 								}else if (Integer.parseInt(month2)==Integer.parseInt(month0)) {
 									if(Integer.parseInt(day0)<Integer.parseInt(day2)){
 										num++;
 										System.out.println("bbb");
+										List<Student> list=studentDao.getLookStu(stu_name);
+										if (list.get(0).getClass_name().equals(class_name)) {
+											num2++;
+										}
 									}
 								}else if (Integer.parseInt(month0)>Integer.parseInt(month1)&&Integer.parseInt(month0)<Integer.parseInt(month2)) {
 									num++;
-									System.out.println("month0:"+month0);
-									System.out.println("month2:"+month2);
-									System.out.println("ccc");
+									System.out.println("year0::"+year0+"-month0:"+month0+"-day0"+day0);
+								
+									List<Student> list=studentDao.getLookStu(stu_name);
+									if (list.get(0).getClass_name().equals(class_name)) {
+										num2++;
+									}
+									System.out.println("c2c2c2");
 								}
 								
-								System.out.println(year0+month0+day0);
+								//System.out.println(year0+month0+day0);
 							}
 						}}
 					}
@@ -266,9 +375,14 @@ public class Statistics extends JDialog {
 							if(Integer.parseInt(month0)==Integer.parseInt(month2)||Integer.parseInt(month0)==Integer.parseInt(month1)){
 								if(Integer.parseInt(day1)<=Integer.parseInt(day0) && Integer.parseInt(day0)<=Integer.parseInt(day2)){
 									num++;
-									System.out.println("month1:"+month1);
-									System.out.println("month0:"+month0);
-									System.out.println("month2:"+month2);
+//									System.out.println("month1:"+month1);
+//									System.out.println("month0:"+month0);
+//									System.out.println("month2:"+month2);
+									List<Student> list=studentDao.getLookStu(stu_name);
+									if (list.get(0).getClass_name().equals(class_name)) {
+										num2++;
+									}
+								System.out.println("3333");
 								}
 							}
 							
@@ -283,6 +397,8 @@ public class Statistics extends JDialog {
 				
 				jTextField_people.setText(String.valueOf(num));
 				num=0;
+				jTextField_class_people.setText(String.valueOf(num2));
+				num2=0;
 			}
 		});
 		setDefaultCloseOperation(2);
