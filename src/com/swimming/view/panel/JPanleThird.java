@@ -95,6 +95,7 @@ public class JPanleThird  implements TableModelListener{
 //						if (listPayments.get(0).getTimes()==0) {
 //							defaultTableModel.setValueAt(-1, i, j);
 //						}else {
+						System.out.println("hhhhhh");
 							defaultTableModel.setValueAt(listPayments.get(0).getTimes(), i, j);
 //						}
 						

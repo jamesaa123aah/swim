@@ -30,6 +30,7 @@ import com.swimming.view.menu.sub.StudentManagementDelete;
 import com.swimming.view.menu.sub.StudentManagementIncrease;
 import com.swimming.view.menu.sub.StudentManagementInfoLook;
 import com.swimming.view.menu.sub.StudentManagementInfochange;
+import com.swimming.view.panel.JPanelSecond;
 
 public  class MenuA {
 
@@ -49,9 +50,9 @@ public  class MenuA {
 		
 				
 //		菜单项(1)
-		JMenuItem jMenuItem1 = new JMenuItem("恢复");
-		JMenuItem jMenuItem22 = new JMenuItem("导入");
-		JMenuItem jMenuItem2 = new JMenuItem("导出");
+		JMenuItem jMenuItem1 = new JMenuItem("导出考勤");
+		JMenuItem jMenuItem22 = new JMenuItem("导入学员信息");
+		JMenuItem jMenuItem2 = new JMenuItem("导出学员信息");
 		JMenuItem jMenuItem3 = new JMenuItem("查看日志");
 		
 //		菜单项(2)
@@ -99,7 +100,7 @@ public  class MenuA {
 		  
 		  
 //		  第（1）个菜单里菜单项的添加	  
-		 // jMenu1.add(jMenuItem1);
+		  jMenu1.add(jMenuItem1);
 		  jMenu1.add(jMenuItem22);
 		  jMenu1.add(jMenuItem2);
 		  //jMenu1.add(jMenuItem3);
@@ -401,14 +402,15 @@ public  class MenuA {
 		});
 		  
 		  
-//		  恢复
+//		  导出考勤信息
 		  jMenuItem1.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				Recovery recovery = new Recovery();
-				recovery.setVisible(true);
+				TestDbToExcel testDbToExcel = new TestDbToExcel();
+				testDbToExcel.AttendanceDbToExcel(JPanelSecond.select_classname);
+			
 			}
 		});
 			

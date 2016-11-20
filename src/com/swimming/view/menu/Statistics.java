@@ -375,9 +375,7 @@ public class Statistics extends JDialog {
 							if(Integer.parseInt(month0)==Integer.parseInt(month2)||Integer.parseInt(month0)==Integer.parseInt(month1)){
 								if(Integer.parseInt(day1)<=Integer.parseInt(day0) && Integer.parseInt(day0)<=Integer.parseInt(day2)){
 									num++;
-//									System.out.println("month1:"+month1);
-//									System.out.println("month0:"+month0);
-//									System.out.println("month2:"+month2);
+
 									List<Student> list=studentDao.getLookStu(stu_name);
 									if (list.get(0).getClass_name().equals(class_name)) {
 										num2++;
@@ -385,6 +383,19 @@ public class Statistics extends JDialog {
 								System.out.println("3333");
 								}
 							}
+							
+//							if (Integer.parseInt(month0)==Integer.parseInt(month2)) {
+//								if (Integer.parseInt(day0)<=Integer.parseInt(day2)) {
+//									num++;
+//
+//									List<Student> list=studentDao.getLookStu(stu_name);
+//									if (list.get(0).getClass_name().equals(class_name)) {
+//										num2++;
+//									}
+//								}
+//							}else if (Integer.parseInt(month0)==Integer.parseInt(month1)) {
+//								
+//							}
 							
 						}
 					}
