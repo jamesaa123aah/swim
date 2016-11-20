@@ -1,5 +1,6 @@
 package com.swimming.dao.Impl;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +26,9 @@ import org.omg.CORBA.PRIVATE_MEMBER;
 import com.swimming.dao.StudentDao;
 import com.swimming.model.Student;
 import com.swimming.util.JDBCUtil;
+
+import jxl.Sheet;
+import jxl.Workbook;
 
 public class StudentDaoImpl implements StudentDao {
 
@@ -217,7 +221,7 @@ public class StudentDaoImpl implements StudentDao {
 	public List allStudent() {
 		// TODO Auto-generated method stub
 		StringBuffer strSQL=new StringBuffer();
-		strSQL.append("select stu_name from student where stu_tab=1");
+		strSQL.append("select stu_name,stu_sex,stu_birth_date,stu_school,class_name,stu_phone,stu_remark from student where stu_tab=1");
 		Connection conn =JDBCUtil.getConnection();
 		PreparedStatement stmt=null;
 		ResultSet rs=null;
@@ -232,6 +236,12 @@ public class StudentDaoImpl implements StudentDao {
 			while(rs.next()){
 				stu=new Student();
 				stu.setStu_name(rs.getString(1));
+				stu.setStu_sex(rs.getString(2));
+				stu.setStu_birthDate(rs.getString(3));
+				stu.setStu_school(rs.getString(4));
+				stu.setClass_name(rs.getString(5));
+				stu.setStu_phone(rs.getString(6));
+				stu.setStu_remark(rs.getString(7));
 				//stu.setStu_number(Integer.parseInt(rs.getString(2)));
 				
 				list.add(stu);
@@ -373,4 +383,46 @@ public class StudentDaoImpl implements StudentDao {
  		
 		return namelist;
 	}
+
+	@Override
+	public List getAllByExcel(File file) {
+	
+	        List<Student> list=new ArrayList<Student>();
+	        try {
+	            Workbook rwb=Workbook.getWorkbook(file);
+	            Sheet rs=rwb.getSheet(0);//或者rwb.getSheet(0)
+	            int clos=rs.getColumns();//得到所有的列
+	            int rows=rs.getRows();//得到所有的行
+	            Student s=null;
+	            //System.out.println(clos+" rows:"+rows);
+	            for (int i = 1; i < rows; i++)//从rows到rows-1
+	            {
+	                for (int j = 0; j < clos; j++) {
+	                    //第一个是列数，第二个是行数
+	                	s=new Student();
+	                    String name=rs.getCell(j++, i).getContents();//默认最左边编号也算一列 所以这里得j++
+	                    String sex=rs.getCell(j++, i).getContents();
+	                    String birthdate=rs.getCell(j++, i).getContents();
+	                    String school=rs.getCell(j++, i).getContents();
+	                    String phone=rs.getCell(j++, i).getContents();
+	                    String class_name=rs.getCell(j++, i).getContents();
+	                    String remark=rs.getCell(j++, i).getContents();
+	                    s.setStu_name(name);
+	                    s.setStu_sex(sex);
+	                    s.setStu_birthDate(birthdate);
+	                    s.setStu_school(school);
+	                    s.setStu_phone(phone);
+	                    s.setClass_name(class_name);
+	                    s.setStu_remark(remark);
+	                    
+	                    list.add(s);
+	                }
+	            }
+	        } catch (Exception e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } 
+	        return list;
+	        
+	    }
 }

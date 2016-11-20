@@ -14,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.swimming.dao.CoachDao;
 import com.swimming.dao.CourseDao;
@@ -21,6 +22,7 @@ import com.swimming.dao.Impl.CoachDaoImpl;
 import com.swimming.dao.Impl.CourseDaoImpl;
 import com.swimming.model.Coach;
 import com.swimming.model.Course;
+import com.swimming.view.panel.JPanelSecond;
 
 public class ClassManagementIncrese extends JDialog {
 
@@ -124,6 +126,9 @@ public class ClassManagementIncrese extends JDialog {
 				CourseDao courseDao = new CourseDaoImpl();
 				courseDao.addClass(course);
 				JOptionPane.showMessageDialog(null,"新增成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+				DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(jTextField_className.getText(),false);
+				JPanelSecond.add(jTextField_className.getText());
+				
 				dispose();
 			}
 		});

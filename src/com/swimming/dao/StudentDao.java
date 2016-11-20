@@ -1,5 +1,6 @@
 package com.swimming.dao;
 
+import java.io.File;
 import java.util.List;
 
 import com.swimming.model.Coach;
@@ -15,4 +16,5 @@ public interface StudentDao {
 	public List nameList();
 	public List StudentList(String coursename);
 	public List coursenameList(String class_name);//每个班级的姓名排序
+	public List getAllByExcel(File file);
 }

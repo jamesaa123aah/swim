@@ -37,17 +37,22 @@ public class JPanelSecond  extends JFrame {
 	/*
 	 * 建立树
 	 */
-	JTree treeRoot;
+	public static JTree treeRoot;
 	JPopupMenu popMenu;  
 	JMenuItem addItem; 
-	
+	public static DefaultMutableTreeNode root,choosen;
 	public static String select_classname = null;
+	
+	public static  DefaultTreeModel model;
+	
 	
 	 public JPanelSecond() {
 		// TODO Auto-generated constructor stub
 		// TODO Auto-generated constructor stub
-		   DefaultMutableTreeNode root = new DefaultMutableTreeNode("全部学员");
+		  root = new DefaultMutableTreeNode("全部学员");
 	
+		  treeRoot = new JTree(root);
+		  model = (DefaultTreeModel) treeRoot.getModel();
 		
 //			数据库获取所有班级信息
 			CourseDao courseDao = new CourseDaoImpl();
@@ -55,14 +60,19 @@ public class JPanelSecond  extends JFrame {
 			
 		
 			for(int i = 0;i<list.size();i++){
+				
+			choosen=(DefaultMutableTreeNode)treeRoot.getLastSelectedPathComponent();
 			DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(list.get(i).getClass_name(),false);
-			root.add(node1);
 			
+			if (choosen==null) {
+				choosen=root;
+			}
+			model.insertNodeInto(node1, choosen, 0);
 			}
 			
 			
 			
-			treeRoot = new JTree(root);  
+			  
 	    	treeRoot.setEditable(true);  
 	    	treeRoot.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);  
 	    	//treeRoot.addMouseListener(this);  
@@ -96,6 +106,19 @@ public class JPanelSecond  extends JFrame {
 	    	
 	}
 	
+	 public static void add(String a) {
+		
+		
+			
+		 
+		 DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(a,false);
+		 if (choosen==null) {
+				choosen=root;
+			}
+			model.insertNodeInto(node1, choosen, 0);
+			}
+	
+	 
 	public JPanel getJPanelSecond() {
 		// TODO Auto-generated constructor stub
 	

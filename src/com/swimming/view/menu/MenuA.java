@@ -11,6 +11,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.xml.soap.Detail;
 
+import com.swimming.util.TestDbToExcel;
+import com.swimming.util.TestExcelToDb;
 import com.swimming.view.menu.sub.ClassManagement;
 import com.swimming.view.menu.sub.ClassManagementDelete;
 import com.swimming.view.menu.sub.ClassManagementIncrese;
@@ -97,10 +99,10 @@ public  class MenuA {
 		  
 		  
 //		  第（1）个菜单里菜单项的添加	  
-		  jMenu1.add(jMenuItem1);
+		 // jMenu1.add(jMenuItem1);
 		  jMenu1.add(jMenuItem22);
 		  jMenu1.add(jMenuItem2);
-		  jMenu1.add(jMenuItem3);
+		  //jMenu1.add(jMenuItem3);
 	
           
 //		  第（2）个菜单里菜单项的添加	  
@@ -376,8 +378,27 @@ public  class MenuA {
 	   * 导出
 	   * 查看日志
 	   */
-		  jMenuItem2.addActionListener(null);
+		  jMenuItem2.addActionListener(new ActionListener() {
+			
+//			  导出
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				TestDbToExcel t = new TestDbToExcel();
+				t.DbToExcel();
+			}
+		});
 		  
+		  jMenuItem22.addActionListener(new ActionListener() {
+				
+//			  导出
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				TestExcelToDb testExcelToDb = new TestExcelToDb();
+				testExcelToDb.ExcelToDb();
+			}
+		});
 		  
 		  
 //		  恢复

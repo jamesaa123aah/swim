@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import com.swimming.dao.CourseDao;
 import com.swimming.dao.Impl.CourseDaoImpl;
 import com.swimming.model.Course;
+import com.swimming.view.panel.JPanelSecond;
 
 public class ClassManagementDelete extends JDialog {
 
@@ -97,6 +98,8 @@ public class ClassManagementDelete extends JDialog {
 				courseDao.deleteClass((String) jComboBox_class.getSelectedItem());
 				JOptionPane.showMessageDialog(null,"删除成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
 				//courseDao.deleteClass(cousre_name);
+				dispose();
+				
 			}
 		});
 //		设置窗口
