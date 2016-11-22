@@ -95,6 +95,8 @@ public class OneKeyAttendance extends JDialog  implements TableModelListener{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				
+				JPanleThird.tag=true;
+				
 				for (int i = 0; i < JPanleThird.my.getRowCount(); i++) {
 					JPanleThird.my.setValueAt(false, i, 1);
 					JPanleThird.my.setValueAt(false, i, 2);
@@ -206,7 +208,9 @@ public class OneKeyAttendance extends JDialog  implements TableModelListener{
                  
                  }
              	 JOptionPane.showMessageDialog(null,"一健考勤成功", "成功", JOptionPane.INFORMATION_MESSAGE);	
+             	
              	 JPanleThird.queryClass(JPanelSecond.select_classname);
+             	 JPanleThird.tag=false;
              	 dispose();		
 			}
 						

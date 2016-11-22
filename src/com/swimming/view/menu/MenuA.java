@@ -53,7 +53,7 @@ public  class MenuA {
 		JMenuItem jMenuItem1 = new JMenuItem("导出考勤");
 		JMenuItem jMenuItem22 = new JMenuItem("导入学员信息");
 		JMenuItem jMenuItem2 = new JMenuItem("导出学员信息");
-		JMenuItem jMenuItem3 = new JMenuItem("查看日志");
+		JMenuItem jMenuItem3 = new JMenuItem("导出漏打卡");
 		
 //		菜单项(2)
 		JMenuItem jMenuItem4 = new JMenuItem("学员管理");
@@ -103,7 +103,7 @@ public  class MenuA {
 		  jMenu1.add(jMenuItem1);
 		  jMenu1.add(jMenuItem22);
 		  jMenu1.add(jMenuItem2);
-		  //jMenu1.add(jMenuItem3);
+		  jMenu1.add(jMenuItem3);
 	
           
 //		  第（2）个菜单里菜单项的添加	  
@@ -420,9 +420,9 @@ public  class MenuA {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				LogTable logTable = new LogTable();
-				logTable.setModal(true);
-				logTable.setVisible(true);
+			
+				TestDbToExcel testDbToExcel = new TestDbToExcel();
+				testDbToExcel.ForgetToexcel();
 			}
 		});
 		}
