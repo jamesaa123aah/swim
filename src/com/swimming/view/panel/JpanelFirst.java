@@ -102,9 +102,9 @@ public class JpanelFirst {
 	public static void getaa() {
 		
 		List<String> list = null;
-		  System.out.println(a.get(Calendar.YEAR));//得到年
-		  System.out.println(a.get(Calendar.MONTH)+1);//由于月份是从0开始的所以加1
-		  System.out.println(a.get(Calendar.DATE));
+//		  System.out.println(a.get(Calendar.YEAR));//得到年
+//		  System.out.println(a.get(Calendar.MONTH)+1);//由于月份是从0开始的所以加1
+//		  System.out.println(a.get(Calendar.DATE));
 		  
 		  
 		 year =String.valueOf(a.get(Calendar.YEAR));

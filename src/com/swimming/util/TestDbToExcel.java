@@ -66,6 +66,8 @@ public class TestDbToExcel {
                 StudentDao studentdao=new StudentDaoImpl();
                 //查询数据库中所有的数据
                 List<Student> list= studentdao.coursenameList(class_name);
+                PaymentDao paymentDao = new PaymentDaoImpl();
+    	    	List<Payment> listPayments;
                //要插入到的Excel表格的行号，默认从0开始
                 Label labelName= new Label(0, 0, "姓名");//表示第0个
                 Label labelTimes= new Label(1, 0, "次数");
@@ -82,23 +84,24 @@ public class TestDbToExcel {
 //                ws.addCell(labelNum);
               
                 for (int i = 0; i < list.size(); i++) {
-                    
+                	
                     Label labelName_i= new Label(0, i+1, list.get(i).getStu_name()+"");
-                    
+                    listPayments=paymentDao.MoneyandTime(list.get(i).getStu_name());
                     ws.addCell(labelName_i);
+                    Label labeltimes_i = new Label(1, i + 1,String.valueOf(listPayments.get(0).getTimes()));
+					ws.addCell(labeltimes_i);
                 }
                 AttendanceDao attendanceDao = new AttendanceDaoImpl();
-    	    	List<Attendance> list1 = new LinkedList<Attendance>();
+    	    	List<Attendance> list1 = new ArrayList<Attendance>();
     	    	list1 = attendanceDao.Attendance();
     	    	int number2 = list1.size();
-    	    	PaymentDao paymentDao = new PaymentDaoImpl();
-    	    	List<Payment> listPayments;
-    	    	//这个月份所有考勤信息的条数,一条一条放入Jtable
+    	    	
+
     	    	for (int i = 0; i < number2; i++) {
     				
     	    		String name = list1.get(i).getStu_name();
     				String date = list1.get(i).getAttendance_date();
-    				listPayments=paymentDao.MoneyandTime(name);
+    				
     				/*
     				 * 日期解析
     				 */
@@ -129,20 +132,16 @@ public class TestDbToExcel {
     					for (int k = 0; k < list.size(); k++) {
     						
     						if(name.equals(list.get(k).getStu_name())){
-    							//data[k][day+3]=list.get(i).getForget();
-//    							机器set ,所有tag = true;
-    							//System.out.println(list1.get(i).getStu_name());
     							
     							Label labelattendance_i= new Label(day+1,k+1,String.valueOf(list1.get(i).getForget()));
     							
     							
     							ws.addCell(labelattendance_i);
-								
-									Label labeltimes_i = new Label(1, k + 1,String.valueOf(listPayments.get(0).getTimes()));
-									ws.addCell(labeltimes_i);
+    							
 								
     							
     						}
+							
     					}
     				}
     				}

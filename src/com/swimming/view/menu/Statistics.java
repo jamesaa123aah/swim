@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -65,6 +67,36 @@ public class Statistics extends JDialog {
 	
 	public Statistics() {
 		// TODO Auto-generated constructor stub
+		
+		
+		/*
+		 *设置统计日期的默认值为当前年月日
+		 *(1)获取当前日期
+		 *(2)设置jcombobox的默认选项
+		 * 
+		 */
+		Calendar a=Calendar.getInstance();
+		
+		String now_year = String.valueOf(a.get(Calendar.YEAR));
+		String now_month = String.valueOf(a.get(Calendar.MONTH)+1);
+		String now_day = String.valueOf(a.get(Calendar.DATE));
+		if (now_day.length()==1) {
+			now_day="0"+now_day;
+		}else if (now_month.length()==1) {
+			now_month="0"+now_month;
+		}
+		
+		System.out.println(now_year);
+		System.out.println(now_month);
+		System.out.println(now_day);
+		
+		jComboBox_year.setSelectedItem(now_year);
+		jComboBox_month.setSelectedItem(now_month);
+		jComboBox_day.setSelectedItem(now_day);
+		
+		jComboBox_year2.setSelectedItem(now_year);
+		jComboBox_month2.setSelectedItem(now_month);
+		jComboBox_day2.setSelectedItem(now_day);
 		
 		/*
 		 * 
