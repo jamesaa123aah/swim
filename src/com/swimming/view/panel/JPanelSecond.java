@@ -94,11 +94,14 @@ public class JPanelSecond  extends JFrame {
 				    String name = note.toString();//获得这个结点的名称
 				    JPanleThird.queryClass(name);
 					
-				    
+				   // JPanleThird.queryClass(JPanelSecond.select_classname);
 				    /*
 				     * 获取选中的班级
 				     */
 				    select_classname=name;
+				    
+				    System.out.println(select_classname);
+				    JPanleThird.queryClass(JPanelSecond.select_classname);
 				}
 			});
 	    	

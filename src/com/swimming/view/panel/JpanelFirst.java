@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
+import java.time.Year;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -96,6 +97,7 @@ public class JpanelFirst {
 	public static String year;
 	public static String month;
 	 
+	
 	/*
 	 * 返回当前日期
 	 */
@@ -242,7 +244,7 @@ public static JPanel getJPanel() {
 			if (month.length()==1) {
 				month = "0"+month;
 			}
-			System.out.println(month.length());
+			System.out.println("11111");
 				
 			/*
 			 * 设置用户选择的时间

@@ -272,11 +272,14 @@ public class Statistics extends JDialog {
 					String date = attendance.getAttendance_date();
 					
 					String stu_name =attendance.getStu_name();
+					
 					String year0,month0,day0;
 					year0 = date.substring(0, 4);
+					//System.out.println("----"+year0);
 					month0=date.substring(5,7);
-					
+					//System.out.println("----"+month0);
 					day0=date.substring(8,10);
+					//System.out.println("----"+day0);
 					//System.out.println(day0);
 
 					/*
@@ -360,16 +363,16 @@ public class Statistics extends JDialog {
 						}
 					}
 //					情况（2）
-					if(Integer.parseInt(year1)==Integer.parseInt(year2)){
+					if(Integer.parseInt(year1)==Integer.parseInt(year2) ){
 						if (Integer.parseInt(year0)==Integer.parseInt(year1)||Integer.parseInt(year0)==Integer.parseInt(year2)) {
 							
 						
 						if(Integer.parseInt(month1)!=Integer.parseInt(month2)){
 							if(Integer.parseInt(month1)<=Integer.parseInt(month0) && Integer.parseInt(month0)<=Integer.parseInt(month2)){				
 								if(Integer.parseInt(month1)==Integer.parseInt(month0)){
-									if(Integer.parseInt(day0)>Integer.parseInt(day1)){
+									if(Integer.parseInt(day0)>=Integer.parseInt(day1)){
 										num++;
-										System.out.println("aaaa");
+										//System.out.println("aaaa");
 										List<Student> list=studentDao.getLookStu(stu_name);
 										if (list.get(0).getClass_name().equals(class_name)) {
 											num2++;
@@ -377,9 +380,9 @@ public class Statistics extends JDialog {
 									}
 									
 								}else if (Integer.parseInt(month2)==Integer.parseInt(month0)) {
-									if(Integer.parseInt(day0)<Integer.parseInt(day2)){
+									if(Integer.parseInt(day0)<=Integer.parseInt(day2)){
 										num++;
-										System.out.println("bbb");
+										//System.out.println("bbb");
 										List<Student> list=studentDao.getLookStu(stu_name);
 										if (list.get(0).getClass_name().equals(class_name)) {
 											num2++;
@@ -402,17 +405,23 @@ public class Statistics extends JDialog {
 					}
 					
 //					情况（3）
-					if(Integer.parseInt(year1)==Integer.parseInt(year2)){
+					if(Integer.parseInt(year1)==Integer.parseInt(year2) && Integer.parseInt(year0)==Integer.parseInt(year1)){
 						if(Integer.parseInt(month1)==Integer.parseInt(month2)){
+							
 							if(Integer.parseInt(month0)==Integer.parseInt(month2)||Integer.parseInt(month0)==Integer.parseInt(month1)){
+								
 								if(Integer.parseInt(day1)<=Integer.parseInt(day0) && Integer.parseInt(day0)<=Integer.parseInt(day2)){
 									num++;
-
+									System.out.println(stu_name);
+									/*
+									 * 2017/2/27
+									 * 统计特定班级的学生
+									 */
 									List<Student> list=studentDao.getLookStu(stu_name);
 									if (list.get(0).getClass_name().equals(class_name)) {
 										num2++;
 									}
-								System.out.println("3333");
+								//System.out.println("3333");
 								}
 							}
 							
